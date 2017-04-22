@@ -3,7 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "cycle-scripts": "1.1.0"
+    "babel-eslint": "^7.2.3",
+    "cycle-scripts": "1.1.0",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-babel": "^4.1.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3",
+    "lint-staged": "^3.4.0",
+    "npm-run-all": "^4.0.2",
+    "pre-commit": "^1.2.2"
   },
   "dependencies": {
     "@cycle/dom": "^17.1.0",
@@ -13,10 +23,47 @@
     "xstream": "^10.5.0"
   },
   "scripts": {
+    "lint-staged": "lint-staged",
     "start": "cycle-scripts start",
     "test": "cycle-scripts test",
     "build": "cycle-scripts build",
-    "eject": "cycle-scripts eject"
+    "eject": "cycle-scripts eject",
+    "lint:js": "eslint --ext js,jsx src",
+    "lint": "npm-run-all --parallel lint:*"
+  },
+  "pre-commit": "lint-staged",
+  "lint-staged": {
+    "*.{js,jsx}": "eslint"
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "extends": [
+      "airbnb"
+    ],
+    "plugins": [
+      "babel"
+    ],
+    "globals": {
+      "fetch": false
+    },
+    "env": {
+      "browser": true
+    },
+    "rules": {
+      "semi": [
+        2,
+        "never"
+      ],
+      "arrow-body-style": 0,
+      "import/prefer-default-export": 0,
+      "react/forbid-prop-types": 0,
+      "import/no-extraneous-dependencies": 0,
+      "import/no-unresolved": 0,
+      "import/extensions": 0,
+      "func-names": 0,
+      "jsx-a11y/no-static-element-interactions": 0,
+      "react/no-danger": 0
+    }
   },
   "babel": {
     "presets": [
