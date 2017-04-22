@@ -1,10 +1,10 @@
 import { div } from '@cycle/dom'
 import xs from 'xstream'
+import Instrument from './components/instrument'
 
-export function App() {
-  const vtree$ = xs.of(
-    div('My Awesome Cycle.js app'),
-  )
+export function App (sources) {
+
+  const instrument = Instrument({DOM$: sources.DOM$})
 
   const music$ = xs.periodic(200).map(() => {
     return {
@@ -14,8 +14,9 @@ export function App() {
   })
 
   const sinks = {
-    DOM$: vtree$,
+    DOM$: instrument.DOM$,
     MUSIC$: music$,
   }
+
   return sinks
 }
