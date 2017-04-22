@@ -20,6 +20,7 @@ app.use((ctx) => {
     }
     case 'DELETE': {
       state[name] = []
+      break
     }
     default: break
   }
