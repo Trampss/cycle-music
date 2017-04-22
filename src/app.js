@@ -1,9 +1,9 @@
-import {div} from '@cycle/dom'
+import { div } from '@cycle/dom'
 import xs from 'xstream'
 
-export function App (sources) {
+export function App() {
   const vtree$ = xs.of(
-    div('My Awesome Cycle.js app')
+    div('My Awesome Cycle.js app'),
   )
 
   const music$ = xs.periodic(200).map(() => {
