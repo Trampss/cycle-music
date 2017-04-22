@@ -10,7 +10,7 @@ const state = {}
 app.use((ctx) => {
   const name = ctx.path.split(context)[1]
 
-  switch(ctx.method) {
+  switch (ctx.method) {
     case 'POST': {
       let list = state[name]
       if (!list) list = []
