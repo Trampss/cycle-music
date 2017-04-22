@@ -14,8 +14,8 @@ export function App (sources) {
   })
 
   const sinks = {
-    DOM: vtree$,
-    MUSIC: music$,
+    DOM$: vtree$,
+    MUSIC$: music$,
   }
   return sinks
 }
