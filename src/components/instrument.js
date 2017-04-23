@@ -24,7 +24,7 @@ export default ({ DOM$, props$ }) => {
   const music$ = xs.combine(
     state$.map(props => props.frequency), // new flux, with only value property
     click$, // Synchronize value property with click event
-  ).map(([frequency, click]) => ({ frequency }))
+  ).map(([frequency]) => ({ frequency }))
 
   const vdom$ = state$
     .map(({ className, name }) => button(className, name))
