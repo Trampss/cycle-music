@@ -29,17 +29,6 @@ export default ({DOM$, props$}) => {
   const vdom$ = state$
     .map(({className, name}) => button(className, name))
 
-
-
-/*
-  const music$ = value$.fold(
-    (old, next) => ({ frequency: old.next, next }),
-    { }
-  ).debug()
-    .map(o => o.frequency)
-  .filter(f => !!f)
-    .map(frequency => ({frequency}))
-*/
   return {
     DOM$: vdom$,
     MUSIC$: music$,

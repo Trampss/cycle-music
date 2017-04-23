@@ -1,31 +1,29 @@
 import { div } from '@cycle/dom'
+import isolate from '@cycle/isolate';
 import xs from 'xstream'
 import Instrument from './components/instrument'
 
-export function App (sources) {
-
-  /*const instrument = Instrument({
-    DOM$: sources.DOM$,
-    props$: xs.of({name: 'guitare', frequency: Math.round(Math.random()*1000) + 200})
-  })*/
-
+export function App ({DOM$}) {
   const randomFrequency = () => Math.round(Math.random()*1000) + 200
 
-  const instruments$ = xs.fromArray(
-    [
-      {name: 'guitare', frequency: randomFrequency()},
-      {name: 'piano', frequency: randomFrequency()},
-      {name: 'ocarina', frequency: randomFrequency()},
-      {name: 'tamtam', frequency: randomFrequency()},
-    ]
-  )
+  const instruments = [
+    {c: isolate(Instrument), frequency: randomFrequency()},
+    {c: isolate(Instrument), name: 'guitare', frequency: randomFrequency()},
+    {c: isolate(Instrument),name: 'piano', frequency: randomFrequency()},
+    {c: isolate(Instrument), name: 'ocarina', frequency: randomFrequency()},
+    {c: isolate(Instrument), name: 'tamtam', frequency: randomFrequency()},
+  ].map(({c, name, frequency}) => c({DOM$, props$: xs.of({name, frequency})}))
 
-  const instruments = instruments$
-    .map(instrument$ => Instrument({DOM$: sources.DOM$, props$: instrument$})).debug().flatten()
+  const vdom$ = xs
+    .combine(...instruments.map(i => i.DOM$))
+    .map(iDom => div(iDom))
+
+  const music$ = xs
+    .merge(...instruments.map(i => i.MUSIC$))
 
   const sinks = {
-    DOM$: instruments.DOM$,
-    MUSIC$: instruments.MUSIC$,
+    DOM$: vdom$,
+    MUSIC$: music$,
   }
 
   return sinks
