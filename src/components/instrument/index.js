@@ -1,1 +1,1 @@
-export {default} from './instrument.js'
+export { default } from '../instrument.js'
