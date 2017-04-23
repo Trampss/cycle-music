@@ -7,12 +7,12 @@ export function App({ DOM$ }) {
   const randomFrequency = () => Math.round(Math.random() * 1000) + 200
 
   const instruments = [
-    { c: isolate(Instrument), frequency: randomFrequency() },
-    { c: isolate(Instrument), name: 'guitare', frequency: randomFrequency() },
-    { c: isolate(Instrument), name: 'piano', frequency: randomFrequency() },
-    { c: isolate(Instrument), name: 'ocarina', frequency: randomFrequency() },
-    { c: isolate(Instrument), name: 'tamtam', frequency: randomFrequency() },
-  ].map(({ c, name, frequency }) => c({ DOM$, props$: xs.of({ name, frequency }) }))
+    { frequency: randomFrequency() },
+    { name: 'guitare', frequency: randomFrequency() },
+    { name: 'piano', frequency: randomFrequency() },
+    { name: 'ocarina', frequency: randomFrequency() },
+    { name: 'tamtam', frequency: randomFrequency() },
+  ].map(instrument => isolate(Instrument)({ DOM$, props$: xs.of(instrument) }))
 
   const vdom$ = xs
     .combine(...instruments.map(i => i.DOM$))

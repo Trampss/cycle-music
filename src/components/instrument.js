@@ -1,33 +1,27 @@
 import { button } from '@cycle/dom'
 import xs from 'xstream'
 
-export default ({ DOM$, props$ }) => {
+export default ({
+  DOM$,
+  props$ = xs.of({ name: 'instrument', frequency: 2000 }),
+}) => {
   // css class to identify component
-  const componentClass = '.instrument'
-  // Initial state of component
-  const intiState$ = xs.of({ className: componentClass, frequency: 2000 })
-  // state of component (agregate parent props and initial state)
-  const state$ = xs.combine(props$, intiState$)
-    .map(([props, state]) => ({
-      className: state.className,
-      name: props.name || 'instrument',
-      frequency: props.frequency || state.frequency,
-    }))
+  const clazz = '.instrument'
 
   // listen click event
   const click$ = DOM$
-    .select(componentClass)
+    .select(clazz)
     .events('click')
     // for each click, push
     .map(() => true)
 
   const music$ = xs.combine(
-    state$.map(props => props.frequency), // new flux, with only value property
+    props$.map(props => props.frequency), // new flux, with only value property
     click$, // Synchronize value property with click event
   ).map(([frequency]) => ({ frequency }))
 
-  const vdom$ = state$
-    .map(({ className, name }) => button(className, name))
+  const vdom$ = props$.debug()
+    .map(({ name }) => button(clazz, name || 'instrument'))
 
   return {
     DOM$: vdom$,
