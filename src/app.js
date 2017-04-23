@@ -3,16 +3,16 @@ import isolate from '@cycle/isolate'
 import xs from 'xstream'
 import { Instrument } from './components'
 
-export function App({ DOM$ }) {
-  const randomFrequency = () => Math.round(Math.random() * 1000) + 200
+const randomFrequency = () => Math.round(Math.random() * 1000) + 200
 
+export function App({ DOM$ }) {
   const instruments = [
     { frequency: randomFrequency() },
     { name: 'guitare', frequency: randomFrequency() },
     { name: 'piano', frequency: randomFrequency() },
     { name: 'ocarina', frequency: randomFrequency() },
     { name: 'tamtam', frequency: randomFrequency() },
-  ].map(instrument => isolate(Instrument)({ DOM$, props$: xs.of(instrument) }))
+  ].map(props => isolate(Instrument)({ DOM$, props$: xs.of(props) }))
 
   const vdom$ = xs
     .combine(...instruments.map(i => i.DOM$))
