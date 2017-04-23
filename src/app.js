@@ -16,7 +16,7 @@ export function App({ DOM$ }) {
 
   const vdom$ = xs
     .combine(...instruments.map(i => i.DOM$))
-    .map(iDom => div(iDom))
+    .map(instrumentDoms => div(instrumentDoms))
 
   const music$ = xs
     .merge(...instruments.map(i => i.MUSIC$))
