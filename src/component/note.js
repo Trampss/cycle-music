@@ -4,10 +4,10 @@ import { svg } from '@cycle/dom'
 export default ({ DOM$, ANIMATION$, props$ }) => {
   const vdom$ = props$.map(props => svg.circle(
     props.id,
-    { attrs: { r: '10px', fill: 'red' } }
+    { attrs: { r: props.r, fill: props.fill } }
   ))
 
-  const animation$ = props$.map(props => ({ follower: { id: props.id } }))
+  const animation$ = props$.map(props => ({ follower: { id: props.id, delay: props.delay } }))
 
   return {
     DOM$: vdom$,

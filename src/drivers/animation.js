@@ -27,23 +27,25 @@ export default (sink$) => {
       return
     }
 
-    const svg = map.select(follower.id)
-    const box = svg.getBBox()
+    setTimeout(() => {
+      const svg = map.select(follower.id)
+      const box = svg.getBBox()
 
-    Snap.animate(
-      0,
-      pathLength,
-      (step) => {
-        const { x, y, alpha } = Snap.path.getPointAtLength(path, step)
+      Snap.animate(
+        0,
+        pathLength,
+        (step) => {
+          const { x, y, alpha } = Snap.path.getPointAtLength(path, step)
 
-        svg.transform(`translate(${x}, ${y}) rotate(${alpha - 90}, ${+box.cx}, ${+box.cy})`)
-      },
-      5000,
-      mina.easeout,
-      () => {
-        console.log('hmm hmm')
-      },
-    )
+          svg.transform(`translate(${x}, ${y}) rotate(${alpha - 90}, ${+box.cx}, ${+box.cy})`)
+        },
+        5000,
+        mina.easeout,
+        () => {
+          console.log(`End for ${follower.id}`)
+        },
+      )
+    }, follower.delay)
   }
 
   sink$.addListener({
