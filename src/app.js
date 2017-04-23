@@ -28,7 +28,7 @@ export function App(sources) {
   const sinks = {
     DOM$: vdom$,
     MUSIC$: music$,
-    ANIMATION$: animation$,
+    ANIMATION$: xs.merge(sources.ANIMATION$, animation$),
   }
 
   return sinks

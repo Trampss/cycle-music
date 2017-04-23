@@ -1,9 +1,12 @@
+import xs from 'xstream'
 import Snap from 'imports-loader?this=>window,fix=>module.exports=0!snapsvg/dist/snap.svg.js'
 
 export default (sink$) => {
+  let listener
   let map
   let path
   let pathLength
+  let duration
 
   const register = (board) => {
     console.debug('Registering map...')
@@ -17,35 +20,34 @@ export default (sink$) => {
 
     path = map.path(board.path).attr(board.attr)
     pathLength = Snap.path.getTotalLength(path)
+    duration = board.duration
   }
 
   const animate = (follower) => {
-    console.debug(`Animate ${follower.id}...`)
-
+    // FIXME : find a way to wait for first register event
     if (!map) {
       window.requestAnimationFrame(() => animate(follower))
       return
     }
 
-    setTimeout(() => {
-      const svg = map.select(follower.id)
-      const box = svg.getBBox()
+    const svg = map.select(follower.id)
+    const box = svg.getBBox()
 
-      Snap.animate(
-        0,
-        pathLength,
-        (step) => {
-          const { x, y, alpha } = Snap.path.getPointAtLength(path, step)
+    Snap.animate(
+      0,
+      pathLength,
+      (step) => {
+        const { x, y, alpha } = Snap.path.getPointAtLength(path, step)
+        listener.next({ id: follower.id, done: false, step: step, point: { x, y, alpha } })
 
-          svg.transform(`translate(${x}, ${y}) rotate(${alpha - 90}, ${+box.cx}, ${+box.cy})`)
-        },
-        5000,
-        mina.easeout,
-        () => {
-          console.log(`End for ${follower.id}`)
-        },
-      )
-    }, follower.delay)
+        svg.transform(`translate(${x}, ${y})`)
+      },
+      duration,
+      mina.linear,
+      () => {
+        listener.next({ id: follower.id, done: true })
+      },
+    )
   }
 
   sink$.addListener({
@@ -62,5 +64,10 @@ export default (sink$) => {
         return animation
       }
     }
+  })
+
+  return xs.create({
+    start: (l) => { listener = l },
+    stop: () => { listener = undefined },
   })
 }

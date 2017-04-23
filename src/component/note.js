@@ -7,7 +7,21 @@ export default ({ DOM$, ANIMATION$, props$ }) => {
     { attrs: { r: props.r, fill: props.fill } }
   ))
 
-  const animation$ = props$.map(props => ({ follower: { id: props.id, delay: props.delay } }))
+  const animation$ = xs
+    .combine(
+      props$,
+      ANIMATION$.startWith({
+        done: true
+      }),
+    )
+    .map(([props, animation]) => ({ props, animation }))
+    .filter(obj => !obj.animation.id || obj.props.id === obj.animation.id)
+    .filter(obj => obj.animation.done)
+    .map(obj => ({
+      follower: {
+        id: obj.props.id,
+      },
+    }))
 
   return {
     DOM$: vdom$,
