@@ -1,28 +1,45 @@
 import {button} from '@cycle/dom'
 import xs from 'xstream'
 
-export default ({DOM$}) => {
+export default ({DOM$, props$}) => {
+  // css class to identify component
   const componentClass = '.instrument'
-
-  const props$ = xs.of({className: componentClass, value: 2000})
+  // Initial state of component
+  const intiState$ = xs.of({className: componentClass, frequency: 2000})
+  // state of component (agregate parent props and initial state)
+  const state$ = xs.combine(props$, intiState$)
+    .map(([props, state]) => ({
+      className: state.className,
+      name : props.name || 'instrument',
+      frequency: props.frequency || state.frequency,
+    }))
 
   // listen click event
-  const clickValue$ = DOM$
+  const click$ = DOM$
     .select(componentClass)
     .events('click')
-    .map(() => (Math.random()*1000)+200)
+    // for each click, push
+    .map(() => true)
 
-  const value$ = xs.merge(
-    props$.map(props => props.value),
-    clickValue$
-  )
+  const music$ = xs.combine(
+    state$.map(props => props.frequency), // new flux, with only value property
+    click$, // Synchronize value property with click event
+  ).map(([frequency, click]) => ({frequency}))
 
-  const vdom$ = xs.combine(props$, value$)
-    .map(([props, value]) => button(props.className, value))
+  const vdom$ = state$
+    .map(({className, name}) => button(className, name))
 
-  const music$ = clickValue$
+
+
+/*
+  const music$ = value$.fold(
+    (old, next) => ({ frequency: old.next, next }),
+    { }
+  ).debug()
+    .map(o => o.frequency)
+  .filter(f => !!f)
     .map(frequency => ({frequency}))
-
+*/
   return {
     DOM$: vdom$,
     MUSIC$: music$,
