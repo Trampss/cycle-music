@@ -1,17 +1,17 @@
 import xs from 'xstream'
 import { svg } from '@cycle/dom'
 
-export default ({ DOM$, ANIMATION$, props$ }) => {
+export default ({ ANIMATION$, props$ }) => {
   const vdom$ = props$.map(props => svg.circle(
     props.id,
-    { attrs: { r: props.r, fill: props.fill } }
+    { attrs: { r: props.r, fill: props.fill } },
   ))
 
   const animation$ = xs
     .combine(
       props$,
       ANIMATION$.startWith({
-        done: true
+        done: true,
       }),
     )
     .map(([props, animation]) => ({ props, animation }))

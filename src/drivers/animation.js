@@ -1,4 +1,5 @@
 import xs from 'xstream'
+// eslint-disable-next-line import/no-webpack-loader-syntax
 import Snap from 'imports-loader?this=>window,fix=>module.exports=0!snapsvg/dist/snap.svg.js'
 
 export default (sink$) => {
@@ -9,8 +10,6 @@ export default (sink$) => {
   let duration
 
   const register = (board) => {
-    console.debug('Registering map...')
-
     // FIXME : find a way to wait for first DOM$ event
     map = Snap(board.id)
     if (!map) {
@@ -31,19 +30,18 @@ export default (sink$) => {
     }
 
     const svg = map.select(follower.id)
-    const box = svg.getBBox()
 
     Snap.animate(
       0,
       pathLength,
       (step) => {
         const { x, y, alpha } = Snap.path.getPointAtLength(path, step)
-        listener.next({ id: follower.id, done: false, step: step, point: { x, y, alpha } })
+        listener.next({ id: follower.id, done: false, step, point: { x, y, alpha } })
 
         svg.transform(`translate(${x}, ${y})`)
       },
       duration,
-      mina.linear,
+      mina.linear, // eslint-disable-line no-undef
       () => {
         listener.next({ id: follower.id, done: true })
       },
@@ -56,14 +54,10 @@ export default (sink$) => {
 
       if (board) {
         register(board)
-        return animation
-      }
-
-      if (follower) {
+      } else if (follower) {
         animate(follower)
-        return animation
       }
-    }
+    },
   })
 
   return xs.create({
