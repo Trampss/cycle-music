@@ -17,8 +17,13 @@ const instruments = [
 
 export default ({ DOM$ }) => {
   const ranges = instruments
-    .map(instrument => xs.of({ instrument, frequencies }))
-    .map(props$ => isolate(Range)({ DOM$, props$ }))
+    .map(instrument => ({ instrument, frequencies }))
+    .map(props =>
+      isolate(
+        Range,
+        props.instrument,
+      )({ DOM$, props$: xs.of(props) }),
+    )
 
   const vdom$ = xs
     .combine(...ranges.map(r => r.DOM$))

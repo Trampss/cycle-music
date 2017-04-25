@@ -1,7 +1,7 @@
 import { button } from '@cycle/dom'
 import xs from 'xstream'
 
-const className = '.instrument'
+const className = '.touch'
 
 export default ({ DOM$, props$ }) => {
   const click$ = DOM$
@@ -11,12 +11,11 @@ export default ({ DOM$, props$ }) => {
   const music$ = xs
     .combine(props$, click$)
     .map(([props]) => ({
-      instrument: props.instrument,
       frequency: props.frequency,
     }))
 
   const vdom$ = props$
-    .map(() => button(className, '@'))
+    .map(() => button(className, '   ')) // FIXME : content
 
   return {
     DOM$: vdom$,

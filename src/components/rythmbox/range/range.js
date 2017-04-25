@@ -6,8 +6,13 @@ import Touch from './touch'
 export default ({ DOM$, props$ }) => {
   const touches$ = props$
     .map(({ instrument, frequencies }) => frequencies
-      .map(frequency => xs.of({ frequency, instrument }))
-      .map(touchProps$ => isolate(Touch)({ DOM$, props$: touchProps$ })),
+      .map(frequency => ({ frequency, instrument }))
+      .map(touchProps =>
+        isolate(
+          Touch,
+          `${touchProps.instrument}-${touchProps.frequency}`,
+        )({ DOM$, props$: xs.of(touchProps) }),
+      ),
     )
 
   const vdom$ = xs
