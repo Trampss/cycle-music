@@ -15,7 +15,7 @@ export default ({ DOM$, props$ }) => {
     }))
 
   const vdom$ = props$
-    .map(() => button(className, '   ')) // FIXME : content
+    .map(() => button(className))
 
   return {
     DOM$: vdom$,
