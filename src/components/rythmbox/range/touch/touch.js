@@ -8,17 +8,18 @@ export default ({ DOM$, props$ }) => {
     .select(className)
     .events('click')
 
-  const music$ = xs
+  const note$ = xs
     .combine(props$, click$)
     .map(([props]) => ({
       frequency: props.frequency,
+      instrument: props.instrument,
     }))
 
   const vdom$ = props$
-    .map(() => button(className))
+    .map(props => button(className, `${props.instrument}`))
 
   return {
     DOM$: vdom$,
-    MUSIC$: music$,
+    NOTE$: note$,
   }
 }

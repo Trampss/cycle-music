@@ -30,12 +30,12 @@ export default ({ DOM$, props$ }) => {
       ],
     ))
 
-  const music$ = touches$
-    .map(touches => xs.merge(...touches.map(t => t.MUSIC$)))
+  const note$ = touches$
+    .map(touches => xs.merge(...touches.map(t => t.NOTE$)))
     .flatten()
 
   return {
     DOM$: vdom$,
-    MUSIC$: music$,
+    NOTE$: note$,
   }
 }

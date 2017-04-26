@@ -35,12 +35,11 @@ export default ({ DOM$ }) => {
       ],
     ))
 
-  const music$ = xs
-    .merge(...ranges.map(t => t.MUSIC$))
-    .debug()
+  const note$ = xs
+    .merge(...ranges.map(t => t.NOTE$))
 
   return {
     DOM$: vdom$,
-    MUSIC$: music$,
+    NOTE$: note$,
   }
 }
