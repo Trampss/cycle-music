@@ -10,7 +10,7 @@ export default ({ NOTE$, props$ }) => {
     isNotify ? { style: { color: 'red' } } : { style: { color: 'black' } },
     props && `${props.name} with ${props.instrument}`)
 
-  const animate$ = NOTE$.map(n => n.duration).flatten()
+  const animate$ = NOTE$.map(n => n.duration$).flatten()
 
   const vdom$ = xs.combine(NOTE$, props$, animate$)
     .map(([note, props, animate]) => p(
