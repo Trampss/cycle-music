@@ -1,23 +1,31 @@
 import xs from 'xstream'
-
+import { div } from '@cycle/dom'
+import isolate from '@cycle/isolate'
 import Rythmbox from './components/rythmbox'
 import Character from './components/character'
 
 export function App({ DOM$ }) {
   const rythmbox = Rythmbox({ DOM$ })
 
-  const goron = Character({
-    NOTE$: rythmbox.NOTE$,
-    props$: xs.of({ name: 'goron', instrument: 'bass' }),
-  })
+  const charactersProps = [
+    { name: 'zora', instrument: 'harp' },
+    { name: 'goron', instrument: 'bass' },
+    { name: 'mojo', instrument: 'guitare' },
+    { name: 'link', instrument: 'ocarina' },
+  ]
 
-  const zora = Character({
-    NOTE$: rythmbox.NOTE$,
-    props$: xs.of({ name: 'zora', instrument: 'harp' }),
-  })
+  const characters = charactersProps.map(props =>
+    isolate(Character, `${props.name}-${props.instrument}`)(
+      {
+        NOTE$: rythmbox.NOTE$,
+        props$: xs.of(props),
+      },
+    ))
 
-  const vdom$ = rythmbox.DOM$
-  const music$ = xs.merge(goron.MUSIC$, zora.MUSIC$).debug()
+  const vdom$ = xs.combine(rythmbox.DOM$, ...characters.map(c => c.DOM$))
+    .map(components => div(components))
+
+  const music$ = xs.merge(...characters.map(c => c.MUSIC$))
 
   const sinks = {
     DOM$: vdom$,

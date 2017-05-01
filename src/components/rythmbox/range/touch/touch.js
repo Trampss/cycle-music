@@ -13,10 +13,11 @@ export default ({ DOM$, props$ }) => {
     .map(([props]) => ({
       frequency: props.frequency,
       instrument: props.instrument,
+      duration: xs.periodic(1),
     }))
 
   const vdom$ = props$
-    .map(props => button(className, `${props.instrument}`))
+    .map(() => button(className, '♪'))
 
   return {
     DOM$: vdom$,
