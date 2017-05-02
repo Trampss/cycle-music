@@ -1,8 +1,6 @@
 import { p } from '@cycle/dom'
-import xs from 'xstream'
 import delay from 'xstream/extra/delay'
-
-const className = '.character'
+import xs from 'xstream'
 
 export default ({ NOTE$, props$ }) => {
   // Map the note
@@ -13,26 +11,21 @@ export default ({ NOTE$, props$ }) => {
 
   const music$ = note$
 
-  // Print the DOM
-  note$ = note$.startWith({ stop: true })
-
-  // Add a 'stop' event
-  const noteDelay$ = note$
-    .map(note => xs.of(note).compose(delay(note.time)))
+  // Add a 'stop' event (for animation)
+  const noteStart$ = note$
+  const noteStop$ = note$
+    .map(note => xs.of(note).compose(delay(200)))
     .flatten()
     .map(note => Object.assign({}, note, { stop: true }))
-
-  note$ = xs
-    .merge(
-      note$,
-      noteDelay$,
-    )
+  note$ = xs.merge(noteStart$, noteStop$)
 
   const vdom$ = xs
-    .combine(note$, props$)
+    .combine(
+      note$.startWith({ stop: true }), // startWith to print the DOM the first time
+      props$,
+    )
     .map(([note, props]) => p(
-      `${className} ${note.stop || '.notify'}`,
-      { style: { color: note.stop ? 'black' : 'red' } },
+      `.character${note.stop ? '' : '.animate'}`,
       `${props.name} with ${props.instrument}`,
     ))
 
