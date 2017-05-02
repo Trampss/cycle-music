@@ -1,7 +1,7 @@
 import { div, img } from '@cycle/dom'
 import xs from 'xstream'
-import Wire from '../wire'
 import delay from 'xstream/extra/delay'
+import Wire from '../wire'
 
 export default ({ NOTE$, props$ }) => {
   // Map the note
@@ -10,7 +10,16 @@ export default ({ NOTE$, props$ }) => {
     .filter(([note, props]) => note.instrument === props.instrument)
     .map(([note]) => Object.assign({}, note, { frequency: note.frequency + 1000 }))
 
-  const wire = Wire({ STREAM$: note$, props$: xs.of({ name: 'WIRE MAN' }) })
+  const wire = Wire({
+    STREAM$: note$,
+    props$: props$.map(p => Object.assign({
+      radius: 45,
+      color: 'black',
+      colorAnimate: 'red',
+      length: 100,
+      startPosition: { x: 50, y: 10 },
+    }, p.wire)),
+  })
 
   // Add a 'stop' event (for animation)
   const noteStart$ = note$
