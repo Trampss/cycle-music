@@ -13,7 +13,7 @@ export default ({ DOM$, props$ }) => {
     .map(([props]) => ({
       frequency: props.frequency,
       instrument: props.instrument,
-      duration$: xs.periodic(1),
+      time: 200,
     }))
 
   const vdom$ = props$

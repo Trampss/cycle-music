@@ -1,26 +1,40 @@
 import { p } from '@cycle/dom'
 import xs from 'xstream'
+import delay from 'xstream/extra/delay'
+
+const className = '.character'
 
 export default ({ NOTE$, props$ }) => {
-  const className = '.character'
-
-  const component = (props, isNotify) => p(
-    `${className} ${isNotify && '.notify'}`,
-    // FIXME : to css file.
-    isNotify ? { style: { color: 'red' } } : { style: { color: 'black' } },
-    props && `${props.name} with ${props.instrument}`)
-
-  const animate$ = NOTE$.map(n => n.duration$).flatten()
-
-  const vdom$ = xs.combine(NOTE$, props$, animate$)
-    .map(([note, props, animate]) => p(
-      component(props, note.instrument === props.instrument && animate < 100)),
-    )
-    .startWith(component())
-
-  const music$ = xs.combine(NOTE$, props$)
+  // Map the note
+  let note$ = xs
+    .combine(NOTE$, props$)
     .filter(([note, props]) => note.instrument === props.instrument)
-    .map(([{ frequency }]) => ({ frequency: frequency + 1000 }))
+    .map(([note]) => Object.assign({}, note, { frequency: note.frequency + 1000 }))
+
+  const music$ = note$
+
+  // Print the DOM
+  note$ = note$.startWith({ stop: true })
+
+  // Add a 'stop' event
+  const noteDelay$ = note$
+    .map(note => xs.of(note).compose(delay(note.time)))
+    .flatten()
+    .map(note => Object.assign({}, note, { stop: true }))
+
+  note$ = xs
+    .merge(
+      note$,
+      noteDelay$,
+    )
+
+  const vdom$ = xs
+    .combine(note$, props$)
+    .map(([note, props]) => p(
+      `${className} ${note.stop || '.notify'}`,
+      { style: { color: note.stop ? 'black' : 'red' } },
+      `${props.name} with ${props.instrument}`,
+    ))
 
   return {
     DOM$: vdom$,
