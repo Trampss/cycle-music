@@ -1,5 +1,6 @@
-import { img } from '@cycle/dom'
+import { div, img } from '@cycle/dom'
 import xs from 'xstream'
+import Wire from '../wire'
 import delay from 'xstream/extra/delay'
 
 export default ({ NOTE$, props$ }) => {
@@ -9,7 +10,7 @@ export default ({ NOTE$, props$ }) => {
     .filter(([note, props]) => note.instrument === props.instrument)
     .map(([note]) => Object.assign({}, note, { frequency: note.frequency + 1000 }))
 
-  const music$ = note$
+  const wire = Wire({ STREAM$: note$, props$: xs.of({ name: 'WIRE MAN' }) })
 
   // Add a 'stop' event (for animation)
   const noteStart$ = note$
@@ -23,14 +24,20 @@ export default ({ NOTE$, props$ }) => {
     .combine(
       note$.startWith({ stop: true }), // startWith to print the DOM the first time
       props$,
+      wire.DOM$,
     )
-    .map(([note, props]) => img(
-      `.character${note.stop ? '' : '.animate'}`,
-      { props: { src: `/svg/${props.name}.svg` } },
-    ))
+    .map(([note, props, wireDom]) =>
+      div(
+        img(
+          `.character${note.stop ? '' : '.animate'}`,
+          { props: { src: `/svg/${props.name}.svg` } },
+        ),
+        wire,
+      ),
+    )
 
   return {
     DOM$: vdom$,
-    MUSIC$: music$,
+    MUSIC$: wire.STREAM$,
   }
 }

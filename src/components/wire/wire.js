@@ -1,23 +1,35 @@
-import { p } from '@cycle/dom'
+import { div } from '@cycle/dom'
 import xs from 'xstream'
 
-export default ({ MUSIC$, props$ }) => {
+/**
+ *
+ * @param STREAM$ any Stream
+ * @param props$ : startPosition{x, y}, radius, length, color, animateColor
+ * @returns {{STREAM$: *}}
+ */
+export default ({ STREAM$, props$ }) => {
   const className = '.wire'
 
-  const animate$ = MUSIC$.map(n => n.duration$).flatten()
-
-  const component = (props, isNotify) => p(
+  const component = (props, isNotify) => div(
     `${className} ${isNotify && '.notify'}`,
-    // FIXME : to css file.
-    isNotify ? { style: { backgroundColor: 'red' } } : { style: { backgroundColor: 'white' } },
-    props && `----------${props.name}----------`)
+    {
+      style: {
+        transformOrigin: 'left',
+        transform: `rotateZ(${props.radius}deg)`,
+        border: 'dashed darkblue 1px',
+        width: `${props.length}px`,
+        position: 'absolute',
+        top: `${props.startPosition.y}px`,
+        left: `${props.startPosition.x}px`,
+      },
+    },
+  )
 
-  const vdom$ = xs.combine(MUSIC$, props$, animate$)
-    .map(([music, props, animate]) => component(props, music && animate < 100))
-    .startWith(component())
+  const vdom$ = props$
+  .map(props => component(props))
 
   return {
     DOM$: vdom$,
-    MUSIC$,
+    STREAM$,
   }
 }
