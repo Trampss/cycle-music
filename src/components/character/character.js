@@ -1,4 +1,4 @@
-import { p } from '@cycle/dom'
+import { img } from '@cycle/dom'
 import xs from 'xstream'
 import delay from 'xstream/extra/delay'
 
@@ -30,10 +30,9 @@ export default ({ NOTE$, props$ }) => {
 
   const vdom$ = xs
     .combine(note$, props$)
-    .map(([note, props]) => p(
+    .map(([note, props]) => img(
       `${className} ${note.stop || '.notify'}`,
-      { style: { color: note.stop ? 'black' : 'red' } },
-      `${props.name} with ${props.instrument}`,
+      { props: { src: `/svg/${props.name}.svg` } },
     ))
 
   return {
