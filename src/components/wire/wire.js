@@ -10,26 +10,16 @@ import delay from 'xstream/extra/delay'
  */
 export default ({ STREAM$, props$ }) => {
   const className = '.wire'
+  const tempo = 1000
 
   const component = (props, stop) => div(
     `${className} ${stop && '.stop'}`,
-    {
-      style: {
-        transformOrigin: 'left',
-        transform: `rotateZ(${props.radius}deg)`,
-        border: stop ? `dashed ${props.color} 1px` : `solid ${props.colorAnimate} 2px`,
-        width: `${props.length}px`,
-        position: 'absolute',
-        top: `${props.startPosition.y}px`,
-        left: `${props.startPosition.x}px`,
-      },
-    },
   )
 
   // Add a 'stop' event
   const start$ = STREAM$
   const stop$ = STREAM$
-    .map(s => xs.of(s).compose(delay(200)))
+    .map(s => xs.of(s).compose(delay(tempo)))
     .flatten()
     .map(s => Object.assign({}, s, { stop: true }))
 
@@ -40,6 +30,6 @@ export default ({ STREAM$, props$ }) => {
 
   return {
     DOM$: vdom$,
-    STREAM$,
+    STREAM$: STREAM$.compose(delay(tempo)),
   }
 }

@@ -1,67 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css" />
-  <title>My Awesome Cycle.js app</title>
-  <style>
-    body {
-      background-color: rgb(96, 62, 101);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css"/>
+    <title>My Awesome Cycle.js app</title>
+    <style>
+        body {
+            background-color: rgb(96, 62, 101);
+        }
 
-    * {
-      transition: all 100ms;
-    }
+        * {
+            transition: all 100ms;
+        }
 
-    .title,
-    .range {
-      display: flex;
-    }
+        .title,
+        .range {
+            display: flex;
+        }
 
-    .title {
-      margin-left: 2em;
-    }
+        .title {
+            margin-left: 2em;
+        }
 
-    .title .frequency,
-    .range .touches .touch {
-      text-align: center;
-      width: 3em;
-      margin: 0 1em;
-    }
+        .title .frequency,
+        .range .touches .touch {
+            text-align: center;
+            width: 3em;
+            margin: 0 1em;
+        }
 
-    .range .instrument {
-      width: 4em;
-    }
+        .range .instrument {
+            width: 4em;
+        }
 
-    img.character {
-      width: 10em;
-    }
+        img.character {
+            width: 10em;
+        }
 
-    @keyframes mymove {
-      from { transform: rotate(0) }
-      to { transform: rotate(360deg) }
-    }
+        .rythmbox {
+            position: absolute;
+            top: 20em;
+            left: 20em;
+        }
 
-    .animate {
-      transform: rotate(20deg);
-    }
+        @keyframes mymove {
+            from {
+                transform: rotate(0)
+            }
+            to {
+                transform: rotate(360deg)
+            }
+        }
 
-    div {
-      display: inline-block;
-    }
+        .animate {
+            transform: rotate(20deg);
+        }
 
-    .speaker.animate {
-      transform: none;
-      animation: mymove 200ms infinite;
-    }
-  </style>
+        div {
+            display: inline-block;
+        }
+
+        .speaker.animate {
+            transform: none;
+            animation: mymove 200ms infinite;
+        }
+
+        .wire {
+            border: solid 1px white;
+            transform-origin: left;
+            width: 150px;
+        }
+
+        .character {
+            position: absolute;
+        }
+
+        .wire.stop {
+            border: dashed 1px black;
+        }
+
+        /* ZORA */
+        .Zora {
+            position: absolute;
+            top: 34em;
+            left: 11em;
+        }
+
+        .Zora .wire {
+            transform: rotateZ(-45deg);
+            margin-left: 5em;
+        }
+
+        .Goron {
+            position: absolute;
+            top: 33em;
+            left: 40em;
+        }
+
+        .Goron .wire {
+            transform: rotateZ(225deg);
+            margin-left: 5em;
+        }
+
+        .Mojo {
+            position: absolute;
+            top: 11em;
+            left: 10em;
+        }
+
+        .Mojo .wire {
+            transform: rotateZ(45deg);
+            margin-left: 5em;
+        }
+
+        .Link {
+            position: absolute;
+            top: 3em;
+            left: 40em;
+        }
+
+        .Link .wire {
+            transform: rotateZ(135deg);
+            margin-left: 5em;
+            margin-top: 9em;
+        }
+    </style>
 </head>
 <body>
-  <div id="app"></div>
-  <script src="bundle.js"></script>
+<div id="app"></div>
+<script src="bundle.js"></script>
 </body>
 </html>
