@@ -6,10 +6,15 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css" />
   <title>My Awesome Cycle.js app</title>
   <style>
     body {
       background-color: rgb(96, 62, 101);
+    }
+
+    * {
+      transition: all 100ms;
     }
 
     .title,
@@ -34,6 +39,24 @@
 
     img.character {
       width: 10em;
+    }
+
+    @keyframes mymove {
+      from { transform: rotate(0) }
+      to { transform: rotate(360deg) }
+    }
+
+    .animate {
+      transform: rotate(20deg);
+    }
+
+    div {
+      display: inline-block;
+    }
+
+    .speaker.animate {
+      transform: none;
+      animation: mymove 200ms infinite;
     }
   </style>
 </head>

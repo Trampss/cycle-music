@@ -3,6 +3,7 @@ import { div } from '@cycle/dom'
 import isolate from '@cycle/isolate'
 import Rythmbox from './components/rythmbox'
 import Character from './components/character'
+import Speaker from './components/speaker'
 
 export function App({ DOM$ }) {
   const rythmbox = Rythmbox({ DOM$ })
@@ -22,15 +23,20 @@ export function App({ DOM$ }) {
       },
     ))
 
-  const vdom$ = xs.combine(rythmbox.DOM$, ...characters.map(c => c.DOM$))
+  const speaker = Speaker({ MUSIC$: xs.merge(...characters.map(c => c.MUSIC$)) })
+
+  const vdom$ = xs
+    .combine(
+      rythmbox.DOM$,
+      ...characters.map(c => c.DOM$),
+      speaker.DOM$,
+    )
     .map(components => div(components))
 
-  const music$ = xs.merge(...characters.map(c => c.MUSIC$))
+  const music$ = speaker.MUSIC$
 
-  const sinks = {
+  return {
     DOM$: vdom$,
     MUSIC$: music$,
   }
-
-  return sinks
 }
