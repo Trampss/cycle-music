@@ -2,36 +2,32 @@ import { div } from '@cycle/dom'
 import xs from 'xstream'
 import delay from 'xstream/extra/delay'
 
-/**
- *
- * @param STREAM$ any Stream
- * @param props$ : startPosition{x, y}, radius, length, color, animateColor
- * @returns {{STREAM$: *}}
- */
+const stopEvent = { stop: true }
+const timeout = 1000
+
+const addDelay = stream$ => stream$ && stream$.compose(delay(timeout))
+
 export default ({ MUSIC$, NOTE$, HTTP$ }) => {
   const className = `.wire ${MUSIC$ ? '.music' : ''} ${NOTE$ ? '.note' : ''} ${HTTP$ ? '.http' : ''}`
-  const addStop = (a, o) => Object.assign({}, o, { stop: a })
-  const tempo = 1000
 
   const start$ = xs.merge(
     MUSIC$ || xs.empty(),
     NOTE$ || xs.empty(),
     HTTP$ || xs.empty(),
-  ).map(s => addStop(false, s)) // FIXME: the dataflow shouldn't transfert the data stop
+  )
 
-  // Add a 'stop' event after tempo
-  const stop$ = start$.compose(delay(tempo))
-    .map(s => addStop(true, s))
-
-  const stream$ = xs.merge(start$, stop$)
-    .filter(s => s.stop)
+  // Add a 'stop' event after timeout
+  const stop$ = start$.compose(delay(timeout))
+    .map(() => stopEvent)
 
   const vdom$ = xs.merge(start$, stop$)
-    .startWith(addStop(true))
+    .startWith(stopEvent)
     .map(s => div(`${className} ${s.stop && '.stop'}`))
 
   return {
     DOM$: vdom$,
-    STREAM$: stream$,
+    MUSIC$: addDelay(MUSIC$),
+    NOTE$: addDelay(NOTE$),
+    HTTP$: addDelay(HTTP$),
   }
 }

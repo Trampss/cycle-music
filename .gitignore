@@ -84,3 +84,4 @@ jspm_packages
 
 build
 /.idea/
+.vscode

@@ -12,7 +12,7 @@ export default ({ NOTE$, props$ }) => {
 
   // modify the note by character
   const note$ = xs
-    .combine(wireNote.STREAM$, props$)
+    .combine(wireNote.NOTE$, props$)
     .filter(([note, props]) => note.instrument === props.instrument)
     .map(([note]) => Object.assign({}, note, { frequency: note.frequency + 1000 }))
 
@@ -55,6 +55,6 @@ export default ({ NOTE$, props$ }) => {
 
   return {
     DOM$: vdom$, // combine all flow of dom
-    MUSIC$: wireMusic.STREAM$, // return flow of Music Wire
+    MUSIC$: wireMusic.MUSIC$, // return flow of Music Wire
   }
 }
