@@ -9,10 +9,10 @@ export function App({ DOM$ }) {
   const rythmbox = Rythmbox({ DOM$ })
 
   const charactersProps = [
-    { name: 'Zora', instrument: 'harp' },
-    { name: 'Goron', instrument: 'bass' },
-    { name: 'Mojo', instrument: 'guitare' },
-    { name: 'Link', instrument: 'ocarina' },
+    { name: 'Zora', instrument: 'piano' },
+    { name: 'Goron', instrument: 'acoustic' },
+    { name: 'Mojo', instrument: 'organ' },
+    { name: 'Link', instrument: 'edm' },
   ]
 
   const characters = charactersProps.map(props =>

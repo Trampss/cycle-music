@@ -11,9 +11,9 @@ export default ({ DOM$, props$ }) => {
   const note$ = xs
     .combine(props$, click$)
     .map(([props]) => ({
-      frequency: props.frequency,
-      instrument: props.instrument,
-      time: 2000,
+      note: props.note,
+      character: props.character,
+      time: 4, // time in second
     }))
 
   const vdom$ = props$

@@ -13,8 +13,9 @@ export default ({ NOTE$, props$ }) => {
   // modify the note by character
   const note$ = xs
     .combine(wireNote.NOTE$, props$)
-    .filter(([note, props]) => note.instrument === props.instrument)
-    .map(([note]) => Object.assign({}, note, { frequency: note.frequency + 1000 }))
+    .filter(([note, props]) => note.character === props.name)
+    .map(([note, props]) =>
+      Object.assign({}, note, { note: note.note, instrument: props.instrument }))
 
   // Character wait <tempo> before play the note
   const music$ = note$.compose(delay(tempo))
