@@ -8,28 +8,30 @@ import delay from 'xstream/extra/delay'
  * @param props$ : startPosition{x, y}, radius, length, color, animateColor
  * @returns {{STREAM$: *}}
  */
-export default ({ STREAM$, props$ }) => {
-  const className = '.wire'
+export default ({ MUSIC$, NOTE$, HTTP$ }) => {
+  const className = `.wire ${MUSIC$ ? '.music' : ''} ${NOTE$ ? '.note' : ''} ${HTTP$ ? '.http' : ''}`
+  const addStop = (a, o) => Object.assign({}, o, { stop: a })
   const tempo = 1000
 
-  const component = (props, stop) => div(
-    `${className} ${stop && '.stop'}`,
-  )
+  const start$ = xs.merge(
+    MUSIC$ || xs.empty(),
+    NOTE$ || xs.empty(),
+    HTTP$ || xs.empty(),
+  ).map(s => addStop(false, s)) // FIXME: the dataflow shouldn't transfert the data stop
 
-  // Add a 'stop' event
-  const start$ = STREAM$
-  const stop$ = STREAM$
-    .map(s => xs.of(s).compose(delay(tempo)))
-    .flatten()
-    .map(s => Object.assign({}, s, { stop: true }))
+  // Add a 'stop' event after tempo
+  const stop$ = start$.compose(delay(tempo))
+    .map(s => addStop(true, s))
 
   const stream$ = xs.merge(start$, stop$)
+    .filter(s => s.stop)
 
-  const vdom$ = xs.combine(props$, stream$.startWith({ stop: true }))
-    .map(([props, stream]) => component(props, stream.stop))
+  const vdom$ = xs.merge(start$, stop$)
+    .startWith(addStop(true))
+    .map(s => div(`${className} ${s.stop && '.stop'}`))
 
   return {
     DOM$: vdom$,
-    STREAM$: STREAM$.compose(delay(tempo)),
+    STREAM$: stream$,
   }
 }

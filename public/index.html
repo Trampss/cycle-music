@@ -42,12 +42,6 @@
             width: 10em;
         }
 
-        .rythmbox {
-            position: absolute;
-            top: 20em;
-            left: 20em;
-        }
-
         @keyframes mymove {
             from {
                 transform: rotate(0)
@@ -61,74 +55,49 @@
             transform: rotate(20deg);
         }
 
-        div {
-            display: inline-block;
+        .speaker {
+            font-size: 6em;
         }
-
         .speaker.animate {
             transform: none;
             animation: mymove 200ms infinite;
         }
 
-        .wire {
-            border: solid 1px white;
+        .wire.music.stop, .wire.note.stop {
+            border: solid 1px black;
+        }
+
+        .wire.note {
+            border: solid 1px red;
+            transform-origin: right;
+            transform: translate(-10em, 5em);
+        }
+
+        .wire.music {
+            border: solid 1px yellow;
             transform-origin: left;
-            width: 150px;
+            transform: translate(10em, -5em);
         }
 
-        .character {
-            position: absolute;
+        #app > div {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
         }
 
-        .wire.stop {
-            border: dashed 1px black;
+        .characters {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 2;
         }
 
-        /* ZORA */
-        .Zora {
-            position: absolute;
-            top: 34em;
-            left: 11em;
+        .characters > div {
+            display: flex;
+            flex-direction: column;
         }
 
-        .Zora .wire {
-            transform: rotateZ(-45deg);
-            margin-left: 5em;
-        }
 
-        .Goron {
-            position: absolute;
-            top: 33em;
-            left: 40em;
-        }
-
-        .Goron .wire {
-            transform: rotateZ(225deg);
-            margin-left: 5em;
-        }
-
-        .Mojo {
-            position: absolute;
-            top: 11em;
-            left: 10em;
-        }
-
-        .Mojo .wire {
-            transform: rotateZ(45deg);
-            margin-left: 5em;
-        }
-
-        .Link {
-            position: absolute;
-            top: 3em;
-            left: 40em;
-        }
-
-        .Link .wire {
-            transform: rotateZ(135deg);
-            margin-left: 5em;
-            margin-top: 9em;
-        }
     </style>
 </head>
 <body>

@@ -25,10 +25,14 @@ export function App({ DOM$ }) {
 
   const speaker = Speaker({ MUSIC$: xs.merge(...characters.map(c => c.MUSIC$)) })
 
+  const charactersDom$ = xs
+    .combine(...characters.map(c => c.DOM$))
+    .map(c => div('.characters', c))
+
   const vdom$ = xs
     .combine(
       rythmbox.DOM$,
-      ...characters.map(c => c.DOM$),
+      charactersDom$,
       speaker.DOM$,
     )
     .map(components => div(components))
