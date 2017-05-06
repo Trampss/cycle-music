@@ -6,8 +6,9 @@ export default ({ NOTE$, props$ }) => {
   // Map the note
   let note$ = xs
     .combine(NOTE$, props$)
-    .filter(([note, props]) => note.instrument === props.instrument)
-    .map(([note]) => Object.assign({}, note, { frequency: note.frequency + 1000 }))
+    .filter(([note, props]) => note.character === props.name)
+    .map(([note, props]) =>
+      Object.assign({}, note, { note: note.note, instrument: props.instrument }))
 
   const music$ = note$
 
