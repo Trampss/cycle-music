@@ -49,16 +49,36 @@
             margin-left: 5em;
         }
 
-        @keyframes mymove {
+        img.instrument.animate {
+
+            animation: instrumentmove 200ms ease-in-out infinite;
+        }
+
+        @keyframes speakermove {
             from {
-                transform: rotate(0)
+                transform: rotate(0);
             }
             to {
-                transform: rotate(360deg)
+                transform: rotate(360deg);
             }
         }
 
-        .animate {
+        @keyframes instrumentmove {
+            0% {
+                transform: rotate(0);
+            }
+            33% {
+                transform: rotate(45deg);
+            }
+            66% {
+                transform: rotate(-45deg);
+            }
+            to {
+                transform: rotate(0);
+            }
+        }
+
+        img.character.animate {
             transform: rotate(20deg);
         }
 
@@ -68,7 +88,7 @@
 
         .speaker.animate {
             transform: none;
-            animation: mymove 200ms infinite;
+            animation: speakermove 1s infinite;
         }
 
         .wire.music.stop, .wire.note.stop {
@@ -91,6 +111,7 @@
             align-items: center;
             display: flex;
             justify-content: space-between;
+            width: 96%;
         }
 
         .characters {
