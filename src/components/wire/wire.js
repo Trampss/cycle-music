@@ -4,8 +4,9 @@ import delay from 'xstream/extra/delay'
 
 /**
  *
- * @param STREAM$ any Stream
- * @param props$ : startPosition{x, y}, radius, length, color, animateColor
+ * @param MUSIC$ Stream of music
+ * @param NOTE$ Stream of note
+ * @param HTTP$ Stream of http
  * @returns {{STREAM$: *}}
  */
 export default ({ MUSIC$, NOTE$, HTTP$ }) => {
