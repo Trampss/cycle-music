@@ -1,11 +1,11 @@
 import { div } from '@cycle/dom'
 import xs from 'xstream'
 import delay from 'xstream/extra/delay'
+import { WIRE_TIMEOUT } from '../../config'
 
 const stopEvent = { stop: true }
-const timeout = 1000
 
-const addDelay = stream$ => stream$ && stream$.compose(delay(timeout))
+const addDelay = stream$ => stream$ && stream$.compose(delay(WIRE_TIMEOUT))
 
 export default ({ MUSIC$, NOTE$, HTTP$ }) => {
   const className = `.wire ${MUSIC$ ? '.music' : ''} ${NOTE$ ? '.note' : ''} ${HTTP$ ? '.http' : ''}`
@@ -17,7 +17,7 @@ export default ({ MUSIC$, NOTE$, HTTP$ }) => {
   )
 
   // Add a 'stop' event after timeout
-  const stop$ = start$.compose(delay(timeout))
+  const stop$ = start$.compose(delay(WIRE_TIMEOUT))
     .map(() => stopEvent)
 
   const vdom$ = xs.merge(start$, stop$)
