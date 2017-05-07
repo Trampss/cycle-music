@@ -1,16 +1,15 @@
 import { div } from '@cycle/dom'
 import isolate from '@cycle/isolate'
 import xs from 'xstream'
+import { NOTES } from '../../config'
 import Range from './range'
-
-const notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
 export default ({ DOM$, props$ }) => {
   // Create characters component with props
   const createRanges = props =>
     props.map(c => isolate(Range, c.name)({
       DOM$,
-      props$: xs.of({ character: c.name, notes }),
+      props$: xs.of({ character: c.name, notes: NOTES }),
     }))
 
   const ranges$ = props$.map(createRanges)
@@ -19,7 +18,7 @@ export default ({ DOM$, props$ }) => {
     .map(ranges => ranges.map(r => r.DOM$))
     .map(r => xs.combine(...r)
       .map(rs => div('.rythmbox', [
-        div('.title', notes.map(n => div('.frequency', n))),
+        div('.title', NOTES.map(n => div('.frequency', n))),
         div(rs),
       ])))
     .flatten()
