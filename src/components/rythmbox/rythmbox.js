@@ -6,10 +6,14 @@ import Range from './range'
 const notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
 export default ({ DOM$, props$ }) => {
-  const ranges$ = props$
-    .map(characters => characters.map(c => isolate(Range, c.name)({
-      DOM$, props$: xs.of({ character: c.name, notes }),
-    })))
+  // Create characters component with props
+  const createRanges = props =>
+    props.map(c => isolate(Range, c.name)({
+      DOM$,
+      props$: xs.of({ character: c.name, notes }),
+    }))
+
+  const ranges$ = props$.map(createRanges)
 
   const vdom$ = ranges$
     .map(ranges => ranges.map(r => r.DOM$))

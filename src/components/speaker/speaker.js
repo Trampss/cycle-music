@@ -15,7 +15,7 @@ export default ({ MUSIC$ }) => {
   const music$ = xs.merge(musicStart$, musicStop$)
 
   const vdom$ = music$
-    .startWith({ stop: true }).debug()
+    .startWith({ stop: true })
     .map(music => div(
       `.speaker${music.stop ? '' : '.animate'}`,
       '🔊',
