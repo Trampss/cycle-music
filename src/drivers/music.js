@@ -1,3 +1,5 @@
+import Synth from 'trampss-audiosynth'
+
 export default (sink$) => {
   sink$.addListener({
     next: (music) => {
