@@ -1,32 +1,34 @@
 import { div, img } from '@cycle/dom'
 import xs from 'xstream'
-import delay from 'xstream/extra/delay'
 import Wire from '../wire'
+import Instrument from '../instrument'
 
 export default ({ NOTE$, props$ }) => {
-  const tempo = 1000
   const addAnimate = (a, o) => Object.assign({}, o, { animate: a })
 
   // show the flow of note ( -> character)
   const wireNote = Wire({ NOTE$ })
 
-  // modify the note by character
+  // Note is for character ?
   const note$ = xs
     .combine(wireNote.NOTE$, props$)
     .filter(([note, props]) => note.character === props.name)
-    .map(([note, props]) =>
-      Object.assign({}, note, { note: note.note, instrument: props.instrument }))
+    .map(([note]) => note)
 
   // Character wait <tempo> before play the note
-  const music$ = note$.compose(delay(tempo))
+  const instrument = Instrument({
+    NOTE$: note$,
+    props$,
+  })
 
   // Show flow of music ( -> speaker)
-  const wireMusic = Wire({ MUSIC$: music$ })
+  const wireMusic = Wire({ MUSIC$: instrument.MUSIC$ })
 
   // draw character
   const characterDom$ = xs.merge(
     note$.map(m => addAnimate(true, m)),
-    music$.map(m => addAnimate(false, m)))
+    instrument.MUSIC$.map(m => addAnimate(false, m)),
+  )
     .startWith(addAnimate(false))
 
   // Combine all character DOM
@@ -38,17 +40,19 @@ export default ({ NOTE$, props$ }) => {
     .combine(
       props$,
       characterDom$,
+      instrument.DOM$,
       wireNote.DOM$,
       wireMusic.DOM$,
     )
-    .map(([props, character, wireNoteDom, wireMusicDom]) =>
+    .map(([props, character, instrumentDom, wireNoteDom, wireMusicDom]) =>
       div(`.${props.name}`,
         [
           wireNoteDom,
           img(
             `.character ${character.animate ? '.animate' : ''}`,
-            { props: { src: `/svg/${props.name}.svg` } },
+            { props: { src: `/svg/characters/${props.name}.svg` } },
           ),
+          instrumentDom,
           wireMusicDom,
         ],
       ),

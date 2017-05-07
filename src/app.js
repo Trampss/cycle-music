@@ -7,10 +7,10 @@ import Speaker from './components/speaker'
 
 export function App({ DOM$ }) {
   const charactersProps = [
-    { name: 'Zora', instrument: 'piano' },
-    { name: 'Goron', instrument: 'acoustic' },
-    { name: 'Mojo', instrument: 'organ' },
-    { name: 'Link', instrument: 'edm' },
+    { name: 'Zora', instrument: 'acoustic' },
+    { name: 'Goron', instrument: 'piano' },
+    { name: 'Mojo', instrument: 'edm' },
+    { name: 'Link', instrument: 'organ' },
   ]
   const rythmbox = Rythmbox({ DOM$, props$: xs.of(charactersProps) })
 
