@@ -3,40 +3,28 @@ import isolate from '@cycle/isolate'
 import xs from 'xstream'
 import Range from './range'
 
-const notes = [
-  'C', // E
-  'D', // G
-  'E', // D
-]
-const characters = [
-  'Goron',
-  'Zora',
-  'Mojo',
-  'Link',
-]
+const notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
-export default ({ DOM$ }) => {
-  const ranges = characters
-    .map(character => ({ character, notes }))
-    .map(props =>
-      isolate(
-        Range,
-        props.character,
-      )({ DOM$, props$: xs.of(props) }),
-    )
+export default ({ DOM$, props$ }) => {
+  const ranges$ = props$
+    .map(characters => characters.map(c => isolate(Range, c.name)({
+      DOM$, props$: xs.of({ character: c.name, notes }),
+    })))
 
-  const vdom$ = xs
-    .combine(...ranges.map(r => r.DOM$))
-    .map(doms => div(
-      '.rythmbox',
-      [
+  const vdom$ = ranges$
+    .map(ranges => ranges.map(r => r.DOM$))
+    .map(r => xs.combine(...r)
+      .map(rs => div('.rythmbox', [
         div('.title', notes.map(n => div('.frequency', n))),
-        div(doms),
-      ],
-    ))
+        div(rs),
+      ])))
+    .flatten()
 
-  const note$ = xs
-    .merge(...ranges.map(t => t.NOTE$))
+  const note$ = ranges$
+    .map(ranges => xs.merge(
+      ...ranges.map(r => r.NOTE$)),
+    )
+    .flatten()
 
   return {
     DOM$: vdom$,

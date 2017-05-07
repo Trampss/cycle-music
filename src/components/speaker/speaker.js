@@ -8,14 +8,14 @@ export default ({ MUSIC$ }) => {
 
   // Add a 'stop' event (for animation)
   const musicStop$ = musicStart$
-    .map(music => xs.of(music).compose(delay(music.time)))
+    .map(music => xs.of(music).compose(delay(music.time * 1000)))
     .flatten()
     .map(music => Object.assign({}, music, { stop: true }))
 
   const music$ = xs.merge(musicStart$, musicStop$)
 
   const vdom$ = music$
-    .startWith({ stop: true })
+    .startWith({ stop: true }).debug()
     .map(music => div(
       `.speaker${music.stop ? '' : '.animate'}`,
       '🔊',
