@@ -1,20 +1,15 @@
 import xs from 'xstream'
 import { div } from '@cycle/dom'
 import isolate from '@cycle/isolate'
-import Rythmbox from './components/rythmbox'
-import Character from './components/character'
-import Speaker from './components/speaker'
+import Rythmbox from '../rythmbox/index'
+import Character from '../character/index'
+import Speaker from '../speaker/index'
+import { CHARACTERS } from '../../config'
 
-export function App({ DOM$ }) {
-  const charactersProps = [
-    { name: 'Zora', instrument: 'acoustic' },
-    { name: 'Goron', instrument: 'piano' },
-    { name: 'Mojo', instrument: 'edm' },
-    { name: 'Link', instrument: 'organ' },
-  ]
-  const rythmbox = Rythmbox({ DOM$, props$: xs.of(charactersProps) })
+export default ({ DOM$ }) => {
+  const rythmbox = Rythmbox({ DOM$, props$: xs.of(CHARACTERS) })
 
-  const characters = charactersProps.map(props =>
+  const characters = CHARACTERS.map(props =>
     isolate(Character, `${props.name}-${props.instrument}`)(
       {
         NOTE$: rythmbox.NOTE$,
