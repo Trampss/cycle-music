@@ -1,10 +1,10 @@
 import { img } from '@cycle/dom'
 import xs from 'xstream'
 import delay from 'xstream/extra/delay'
-import { INSTRUMENT_TIMEOUT } from '../../config'
+import { ANIMATION_TIMEOUT } from '../../config'
 import { STOP_EVENT } from '../../constant'
 
-const addDelay = stream$ => stream$ && stream$.compose(delay(INSTRUMENT_TIMEOUT))
+const addDelay = stream$ => stream$ && stream$.compose(delay(ANIMATION_TIMEOUT))
 const className = '.instrument'
 
 export default ({ NOTE$, props$ }) => {
@@ -13,7 +13,7 @@ export default ({ NOTE$, props$ }) => {
     .combine(NOTE$, props$)
     .map(([note, props]) => Object.assign({}, note, { instrument: props.instrument }))
 
-  const stop$ = music$.compose(delay(INSTRUMENT_TIMEOUT))
+  const stop$ = music$.compose(delay(ANIMATION_TIMEOUT))
     .map(() => STOP_EVENT)
 
   const vdom$ = xs

@@ -9,13 +9,13 @@ export default ({ NOTE$, props$ }) => {
   // show the flow of note ( -> character)
   const wireNote = Wire({ NOTE$ })
 
-  // Note is for character ?
+  // When the note must be playing by character
   const note$ = xs
     .combine(wireNote.NOTE$, props$)
     .filter(([note, props]) => note.character === props.name)
     .map(([note]) => note)
 
-  // Character wait <tempo> before play the note
+  // instrument transform note
   const instrument = Instrument({
     NOTE$: note$,
     props$,
