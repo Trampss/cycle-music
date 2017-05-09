@@ -46,12 +46,12 @@ export default ({ DOM$ }) => {
 
   /*
   Draw DOM with all Component
-   */
+
   const characters = div(
     '.characters',
     connectedCharacters.map(({ wireNote, character, wireMusic }) =>
       div('.character', xs.combine(wireNote.DOM$, character.DOM$, wireMusic.DOM$).debug())),
-  )
+  ) */
 
   const vdom$ = xs
     .combine(
