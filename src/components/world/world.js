@@ -9,70 +9,60 @@ import { CHARACTERS } from '../../config'
 
 export default ({ DOM$ }) => {
   /*
-  Create Rythmbox
+   Create Rythmbox
    */
   const rythmbox = Rythmbox({ DOM$, props$: xs.of(CHARACTERS) })
 
   /*
-  Connect Character with Rythmbox by Wire
- */
+   Create Characters object and connect with environment - between rythmbox and speaker -
+   */
   const connectedCharacters = CHARACTERS
-    .map(props => ({
-      wireNote: isolate(Wire, `wireNote-${props.name}`)({ NOTE$: rythmbox.NOTE$ }),
-      props,
-    }))
-    .map(({ wireNote, props }) => {
-      const character = isolate(Character, `character-${props.name}`)(
-        {
-          NOTE$: wireNote.NOTE$,
-          props$: xs.of(props),
-        },
-      )
-
-      return Object.assign({}, { wireNote, props }, { character })
-    })
-    .map(({ wireNote, character, props }) => {
-      const wireMusic = isolate(Wire, `wireMusic-${props.name}`)({ MUSIC$: character.MUSIC$ })
-
-      return Object.assign({}, { wireNote, character, props }, { wireMusic })
-    })
+  // Create note wire - between rythmbox and character -
+  .map(props => ({
+    wireNote: isolate(Wire, `wireNote-${props.name}`)({ NOTE$: rythmbox.NOTE$ }),
+    props,
+  }))
+  // Create Character connected to note wire
+  .map(({ wireNote, props }) => {
+    const character = isolate(Character, `character-${props.name}`)({ NOTE$: wireNote.NOTE$, props$: xs.of(props) })
+    return Object.assign({}, { wireNote, props }, { character })
+  })
+  // Create music wire - connected after character -
+  .map(({ wireNote, character, props }) => {
+    const wireMusic = isolate(Wire, `wireMusic-${props.name}`)({ MUSIC$: character.MUSIC$ })
+    return Object.assign({}, { wireNote, character, props }, { wireMusic })
+  })
 
   /*
-  Create Speaker
+   Create Speaker
    */
   const speaker = Speaker({
     MUSIC$: xs.merge(...connectedCharacters.map(({ wireMusic }) => wireMusic.MUSIC$)),
   })
 
   /*
-  Draw DOM with all Component
+   Draw DOM with all Component
+   */
+  // Transform character object to flow of dom - Dom of wireNote, character and wireMusic -
+  const toCharacterDom$ = ({ wireNote, character, wireMusic }) =>
+    xs.combine(wireNote.DOM$, character.DOM$, wireMusic.DOM$).map(c => div('.character', c))
 
-  const characters = div(
-    '.characters',
-    connectedCharacters.map(({ wireNote, character, wireMusic }) =>
-      div('.character', xs.combine(wireNote.DOM$, character.DOM$, wireMusic.DOM$).debug())),
-  ) */
+  // Combine all flow of Dom character to one div
+  const charactersDom$ = xs.combine(
+    ...connectedCharacters.map(toCharacterDom$),
+  ).map(cs => div('.characters', cs))
 
+  // Combine all dom component
   const vdom$ = xs
-    .combine(
-      rythmbox.DOM$,
-      xs.of(connectedCharacters),
-      speaker.DOM$,
-    )
-    .map(([rd, c, sd]) =>
-      div([
-        rd,
-        div(
-          '.characters',
-          c.map(({ wireNote, character, wireMusic }) =>
-            div('.character', xs.combine(wireNote.DOM$, character.DOM$, wireMusic.DOM$))),
-        ),
-        sd,
-      ]))
+  .combine(
+    rythmbox.DOM$,
+    charactersDom$,
+    speaker.DOM$,
+  )
+  .map(worldDom => div(worldDom))
 
   return {
     DOM$: vdom$,
     MUSIC$: speaker.MUSIC$,
   }
 }
-
