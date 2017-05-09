@@ -36,9 +36,9 @@ export default ({ DOM$ }) => {
   /*
    Create Speaker
    */
-  const speaker = Speaker({
-    MUSIC$: xs.merge(...connectedCharacters.map(({ wireMusic }) => wireMusic.MUSIC$)),
-  })
+  const musics$ = xs.merge(...connectedCharacters.map(({ wireMusic }) => wireMusic.MUSIC$))
+  const wireMusics = Wire({ MUSIC$: musics$ })
+  const speaker = Speaker({ MUSIC$: wireMusics.MUSIC$ })
 
   /*
    Draw DOM with all Component
@@ -57,6 +57,7 @@ export default ({ DOM$ }) => {
   .combine(
     rythmbox.DOM$,
     charactersDom$,
+    wireMusics.DOM$,
     speaker.DOM$,
   )
   .map(worldDom => div(worldDom))

@@ -24,14 +24,17 @@
         }
 
         .title {
-            margin-left: 2em;
+            margin-left: 4em;
         }
 
-        .title .frequency,
+        .title .frequency {
+            text-align: center;
+            width: 2.5em;
+        }
+
         .range .touches .touch {
             text-align: center;
             width: 3em;
-            margin: 0 1em;
         }
 
         .range .instrument {
@@ -102,6 +105,12 @@
 
         .wire.music {
             border: solid 1px yellow;
+            transform-origin: left;
+            transform: translate(10em, -5em);
+        }
+
+        #world > div > div.wire.music {
+            width: 150px;
             transform-origin: left;
             transform: translate(10em, -5em);
         }
