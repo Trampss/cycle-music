@@ -60,7 +60,7 @@ export default ({ DOM$ }) => {
     wireMusics.DOM$,
     speaker.DOM$,
   )
-  .map(worldDom => div(worldDom))
+  .map(worldDom => div('.world', worldDom))
 
   return {
     DOM$: vdom$,

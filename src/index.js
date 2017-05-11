@@ -1,12 +1,12 @@
 import { run } from '@cycle/run'
 import { makeDOMDriver } from '@cycle/dom'
-import World from './components/world'
+import App from './app'
 import { music } from './drivers'
 
-const main = World
+const main = App
 
 const drivers = {
-  DOM$: makeDOMDriver('#world'),
+  DOM$: makeDOMDriver('#app'),
   MUSIC$: music,
 }
 
