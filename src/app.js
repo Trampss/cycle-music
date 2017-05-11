@@ -2,6 +2,7 @@ import { div } from '@cycle/dom'
 import xs from 'xstream'
 import World from './components/world'
 import Cyclejs from './components/cyclejs'
+import Drivers from './components/drivers'
 
 export default ({ DOM$ }) => {
   /*
@@ -11,13 +12,20 @@ export default ({ DOM$ }) => {
 
   const cyclejs = Cyclejs({ MUSIC$: world.MUSIC$ })
 
+  const drivers = Drivers({ MUSIC$: cyclejs.MUSIC$ })
+
   const vdom$ = xs.combine(
     world.DOM$,
     cyclejs.DOM$,
-  ).map(app => div('.app', app))
+    drivers.DOM$,
+  ).map(([worldDom, cyclejsDom, driversDom]) => div('.app', [
+    worldDom,
+    div('.libraries', cyclejsDom),
+    driversDom,
+  ]))
 
   return {
     DOM$: vdom$,
-    MUSIC$: cyclejs.MUSIC$,
+    MUSIC$: drivers.MUSIC$,
   }
 }

@@ -4,7 +4,6 @@ import isolate from '@cycle/isolate'
 import Rythmbox from '../rythmbox/index'
 import Character from '../character/index'
 import Wire from '../wire'
-import Speaker from '../speaker/index'
 import { CHARACTERS } from '../../config'
 
 export default ({ DOM$ }) => {
@@ -38,7 +37,6 @@ export default ({ DOM$ }) => {
    */
   const musics$ = xs.merge(...connectedCharacters.map(({ wireMusic }) => wireMusic.MUSIC$))
   const wireMusics = Wire({ MUSIC$: musics$ })
-  const speaker = Speaker({ MUSIC$: wireMusics.MUSIC$ })
 
   /*
    Draw DOM with all Component
@@ -58,12 +56,11 @@ export default ({ DOM$ }) => {
     rythmbox.DOM$,
     charactersDom$,
     wireMusics.DOM$,
-    speaker.DOM$,
   )
   .map(worldDom => div('.world', worldDom))
 
   return {
     DOM$: vdom$,
-    MUSIC$: speaker.MUSIC$,
+    MUSIC$: wireMusics.MUSIC$,
   }
 }

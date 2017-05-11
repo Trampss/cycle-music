@@ -24,7 +24,7 @@ export default ({ MUSIC$, NOTE$, HTTP$ }) => {
     .startWith(stopEvent)
     .map(s =>
       img(
-        `${className} ${s.stop && '.stop'}`,
+        `${className} ${s.stop ? '' : '.animate'}`,
         { props: { src: '/svg/libraries/cyclejs.svg' } },
       ))
 
