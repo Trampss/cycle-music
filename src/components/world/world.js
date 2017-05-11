@@ -7,7 +7,7 @@ import Wire from '../wire'
 import { CHARACTERS } from '../../config'
 
 export default ({ DOM$ }) => {
-  //Create Rythmbox
+  // Create Rythmbox
   const rythmbox = Rythmbox({ DOM$, props$: xs.of(CHARACTERS) })
 
   // Create Characters object and connect with environment - between rythmbox and speaker -
