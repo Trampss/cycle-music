@@ -18,11 +18,12 @@ export default ({ DOM$ }) => {
     world.DOM$,
     cyclejs.DOM$,
     drivers.DOM$,
-  ).map(([worldDom, cyclejsDom, driversDom]) => div('.app', [
-    worldDom,
-    div('.libraries', cyclejsDom),
-    driversDom,
-  ]))
+  ).map(([worldDom, cyclejsDom, driversDom]) =>
+    div('.app', [
+      worldDom,
+      div('.libraries', cyclejsDom),
+      driversDom,
+    ]))
 
   return {
     DOM$: vdom$,
