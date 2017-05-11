@@ -1,4 +1,7 @@
+import { div } from '@cycle/dom'
+import xs from 'xstream'
 import World from './components/world'
+import Cyclejs from './components/cyclejs'
 
 export default ({ DOM$ }) => {
   /*
@@ -6,9 +9,15 @@ export default ({ DOM$ }) => {
    */
   const world = World({ DOM$ })
 
+  const cyclejs = Cyclejs({ MUSIC$: world.MUSIC$ })
+
+  const vdom$ = xs.combine(
+    world.DOM$,
+    cyclejs.DOM$,
+  ).map(app => div('.app', app))
 
   return {
-    DOM$: world.DOM$,
-    MUSIC$: world.MUSIC$,
+    DOM$: vdom$,
+    MUSIC$: cyclejs.MUSIC$,
   }
 }
