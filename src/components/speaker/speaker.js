@@ -1,7 +1,7 @@
 import xs from 'xstream'
-import { div } from '@cycle/dom'
 import { addDelay } from '../../utils'
 import { STOP_EVENT } from '../../constant'
+import { img } from '@cycle/dom'
 
 export default ({ MUSIC$ }) => {
   // FIXME: the dataflow shouldn't transfert the data stop
@@ -17,9 +17,9 @@ export default ({ MUSIC$ }) => {
 
   const vdom$ = music$
     .startWith(STOP_EVENT)
-    .map(music => div(
+    .map(music => img(
       `.speaker${music.stop ? '' : '.animate'}`,
-      '🔊',
+       { props: { src: 'svg/drivers/speaker.svg' } },
     ))
 
   return {
