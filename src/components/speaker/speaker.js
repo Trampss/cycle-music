@@ -1,7 +1,7 @@
 import xs from 'xstream'
+import { img } from '@cycle/dom'
 import { addDelay } from '../../utils'
 import { STOP_EVENT } from '../../constant'
-import { img } from '@cycle/dom'
 
 export default ({ MUSIC$ }) => {
   // FIXME: the dataflow shouldn't transfert the data stop
