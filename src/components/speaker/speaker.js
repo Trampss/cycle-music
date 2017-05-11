@@ -1,6 +1,7 @@
 import xs from 'xstream'
-import delay from 'xstream/extra/delay'
 import { div } from '@cycle/dom'
+import { addDelay } from '../../utils'
+import { STOP_EVENT } from '../../constant'
 
 export default ({ MUSIC$ }) => {
   // FIXME: the dataflow shouldn't transfert the data stop
@@ -8,14 +9,14 @@ export default ({ MUSIC$ }) => {
 
   // Add a 'stop' event (for animation)
   const musicStop$ = musicStart$
-    .map(music => xs.of(music).compose(delay(music.time * 1000)))
+    .map(music => addDelay(xs.of(music), music.time * 1000))
     .flatten()
-    .map(music => Object.assign({}, music, { stop: true }))
+    .map(music => Object.assign({}, music, STOP_EVENT))
 
   const music$ = xs.merge(musicStart$, musicStop$)
 
   const vdom$ = music$
-    .startWith({ stop: true })
+    .startWith(STOP_EVENT)
     .map(music => div(
       `.speaker${music.stop ? '' : '.animate'}`,
       '🔊',

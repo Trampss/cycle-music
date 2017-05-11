@@ -1,6 +1,5 @@
-import xs from 'xstream'
 import { div } from '@cycle/dom'
-import Speaker from '../speaker/index'
+import Speaker from '../speaker'
 
 export default ({ MUSIC$ }) => {
   // Create Speaker
