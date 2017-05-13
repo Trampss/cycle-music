@@ -1,1 +1,1 @@
-export { default } from './cyclejs'
+export { default } from './merge'

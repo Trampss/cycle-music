@@ -4,14 +4,9 @@ import { WIRE_TIMEOUT } from '../../config'
 import { STOP_EVENT } from '../../constant'
 import { addDelay } from '../../utils'
 
-export default ({ MUSIC$, NOTE$, HTTP$ }) => {
-  const className = '.cyclejs'
-
-  const start$ = xs.merge(
-    MUSIC$ || xs.empty(),
-    NOTE$ || xs.empty(),
-    HTTP$ || xs.empty(),
-  )
+export default ({ MUSICS }) => {
+  const className = '.merge'
+  const start$ = xs.merge(...MUSICS)
 
   // Add a 'stop' event after timeout
   const stop$ = addDelay(start$, WIRE_TIMEOUT)
@@ -22,13 +17,11 @@ export default ({ MUSIC$, NOTE$, HTTP$ }) => {
     .map(s =>
       img(
         `${className} ${s.stop ? '' : '.animate'}`,
-        { props: { src: '/svg/libraries/cyclejs.svg' } },
+        { props: { src: '/svg/libraries/merge.svg' } },
       ))
 
   return {
     DOM$: vdom$,
-    MUSIC$: addDelay(MUSIC$, WIRE_TIMEOUT),
-    NOTE$: addDelay(NOTE$, WIRE_TIMEOUT),
-    HTTP$: addDelay(HTTP$, WIRE_TIMEOUT),
+    MUSIC$: addDelay(start$, WIRE_TIMEOUT),
   }
 }
