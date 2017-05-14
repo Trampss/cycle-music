@@ -4,13 +4,14 @@ import { WIRE_TIMEOUT } from '../../config'
 import { STOP_EVENT } from '../../constant'
 import { addDelay } from '../../utils'
 
-export default ({ MUSIC$, NOTE$, HTTP$ }) => {
+export default ({ NOTE$, MUSIC$, MUSICS$, HTTP$ }) => {
   const className = `.wire ${MUSIC$ ? '.music' : ''} ${NOTE$ ? '.note' : ''} ${HTTP$ ? '.http' : ''}`
-  const content = `${MUSIC$ ? '🎶' : ''} ${NOTE$ ? '🎵' : ''} ${HTTP$ ? '💩' : ''}`
-  const translateNote = (a, i) => `translateY(${a ? -i * 2 : 0}vh) translateX(${i % 2 === 0 ? 0.5 : -0.5}em)`
-  const translateMusic = (a, i) => `translateY(${a ? -i * 2 : 0}vh) translateX(${i % 2 === 0 ? 0.5 : -0.5}em)`
-  const translate = (a, i) => `${MUSIC$ ? translateMusic(a, i) : ''} ${NOTE$ ? translateNote(a,
-    i) : ''}`
+  const content = `${MUSICS$ ? '🎶🎶' : ''} ${MUSIC$ ? '🎶' : ''} ${NOTE$ ? '🎵' : ''} ${HTTP$ ? '💩' : ''}`
+  const step = (a, i) => (a ? i * 2 : 0)
+  const flow = i => (i % 2 === 0 ? 1 : -1)
+  const translateX = (a, i) => `translateX(${step(a, i)}vw) translateY(${flow(i)}vh)`
+  const translateY = (a, i) => `translateY(${step(a, i)}vh) translateX(${flow(i)}vw)`
+  const translate = (a, i) => `${MUSICS$ ? translateX(a, i) : ''} ${MUSIC$ ? translateY(a, -i) : ''} ${NOTE$ ? translateY(a, -i) : ''}`
 
   const time = 15
   const period = WIRE_TIMEOUT / time
@@ -23,8 +24,9 @@ export default ({ MUSIC$, NOTE$, HTTP$ }) => {
   })
 
   const start$ = xs.merge(
-    MUSIC$ || xs.empty(),
     NOTE$ || xs.empty(),
+    MUSIC$ || xs.empty(),
+    MUSICS$ || xs.empty(),
     HTTP$ || xs.empty(),
   ).map(s => (Object.assign({}, s, { periodic: xs.periodic(period) })))
 
@@ -51,6 +53,7 @@ export default ({ MUSIC$, NOTE$, HTTP$ }) => {
   return {
     DOM$: vdom$,
     MUSIC$: addDelay(MUSIC$, WIRE_TIMEOUT),
+    MUSICS$: addDelay(MUSICS$, WIRE_TIMEOUT),
     NOTE$: addDelay(NOTE$, WIRE_TIMEOUT),
     HTTP$: addDelay(HTTP$, WIRE_TIMEOUT),
   }

@@ -1,6 +1,6 @@
 import { img } from '@cycle/dom'
 import xs from 'xstream'
-import { WIRE_TIMEOUT } from '../../config'
+import { ANIMATION_TIMEOUT } from '../../config'
 import { STOP_EVENT } from '../../constant'
 import { addDelay } from '../../utils'
 
@@ -9,7 +9,7 @@ export default ({ MUSICS }) => {
   const start$ = xs.merge(...MUSICS)
 
   // Add a 'stop' event after timeout
-  const stop$ = addDelay(start$, WIRE_TIMEOUT)
+  const stop$ = addDelay(start$, ANIMATION_TIMEOUT)
     .map(() => STOP_EVENT)
 
   const vdom$ = xs.merge(start$, stop$)
@@ -22,6 +22,6 @@ export default ({ MUSICS }) => {
 
   return {
     DOM$: vdom$,
-    MUSIC$: addDelay(start$, WIRE_TIMEOUT),
+    MUSICS$: addDelay(start$, ANIMATION_TIMEOUT),
   }
 }
