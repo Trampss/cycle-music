@@ -7,8 +7,8 @@ export default ({ NOTE$, props$ }) => {
 
   // When the note must be playing by character
   const note$ = xs
-    .combine(NOTE$, props$)
-    .filter(([note, props]) => note.character === props.name)
+    .combine(NOTE$, props$).debug()
+    .filter(([note, props]) => note.characters[props.name])
     .map(([note]) => note)
 
   // instrument transform note

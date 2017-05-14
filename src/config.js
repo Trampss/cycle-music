@@ -3,10 +3,10 @@ export const ANIMATION_TIMEOUT = 1000
 export const NOTES = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
 export const CHARACTERS = [
-  { name: 'Zora', instrument: 'acoustic' },
-  { name: 'Goron', instrument: 'piano' },
-  { name: 'Mojo', instrument: 'edm' },
-  { name: 'Link', instrument: 'organ' },
+  { name: 'zora', instrument: 'acoustic' },
+  { name: 'goron', instrument: 'piano' },
+  { name: 'mojo', instrument: 'edm' },
+  { name: 'link', instrument: 'organ' },
 ]
 
 export const INSTRUMENTS = [

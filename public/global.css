@@ -1,0 +1,155 @@
+body {
+    background-color: white;
+}
+
+* {
+    transition: all 100ms;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.world, .libraries, .drivers {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 1em;
+    padding: 1em;
+    width: 95%;
+}
+
+.world > div.wire.music {
+    width: 150px;
+    transform-origin: left;
+    transform: translate(10em, -5em);
+}
+
+.world {
+    background-color: rgb(96, 62, 101);
+    border: .5em solid black;
+}
+
+.libraries {
+    background-color: rgb(96, 62, 101);
+    border: .5em solid black;
+    flex-direction: column;
+}
+
+.drivers {
+    background-color: rgb(96, 62, 101);
+    border: .5em solid black;
+    flex-direction: column;
+}
+
+.cyclejs {
+    width: 6em;
+}
+
+.title,
+.range {
+    display: flex;
+}
+
+.title {
+    margin-left: 4em;
+}
+
+.title .frequency {
+    text-align: center;
+    width: 2.5em;
+}
+
+.range .touches .touch {
+    text-align: center;
+    width: 3em;
+}
+
+.range .instrument {
+    width: 4em;
+}
+
+img.character {
+    width: 10em;
+}
+
+img.instrument {
+    width: 5em;
+    position: relative;
+    margin-left: -5em;
+}
+
+img.instrument.animate {
+    animation: instrumentmove 200ms ease-in-out infinite;
+}
+
+img.cyclejs.animate {
+    animation: instrumentmove 200ms ease-in-out infinite;
+}
+
+@keyframes speakermove {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes instrumentmove {
+    0% {
+        transform: rotate(0);
+    }
+    33% {
+        transform: rotate(45deg);
+    }
+    66% {
+        transform: rotate(-45deg);
+    }
+    to {
+        transform: rotate(0);
+    }
+}
+
+img.character.animate {
+    transform: rotate(20deg);
+}
+
+.speaker {
+    width: 8em;
+}
+
+.speaker.animate {
+    transform: none;
+    animation: speakermove 1s infinite;
+}
+
+.wire.music.stop, .wire.note.stop {
+    border: solid 1px black;
+}
+
+.wire.note {
+    border: solid 1px red;
+    transform-origin: right;
+    transform: translate(-10em, 5em);
+}
+
+.wire.music {
+    border: solid 1px yellow;
+    transform-origin: left;
+    transform: translate(10em, -5em);
+}
+
+.characters {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 2;
+}
+
+.characters > div {
+    display: flex;
+    flex-direction: column;
+}

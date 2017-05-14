@@ -1,4 +1,4 @@
-import { button } from '@cycle/dom'
+import { div, li, span } from '@cycle/dom'
 import xs from 'xstream'
 
 const className = '.touch'
@@ -17,7 +17,7 @@ export default ({ DOM$, props$ }) => {
     }))
 
   const vdom$ = props$
-    .map(() => button(className, '♪'))
+    .map(() => li([div('.touch'), span()]))
 
   return {
     DOM$: vdom$,
