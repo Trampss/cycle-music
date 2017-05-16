@@ -99,7 +99,7 @@ ul.piano li a:active:after, ul.piano li div.touch:active:after {
 ul.piano li span {
     position: absolute;
     top: 0px;
-    left: -0.5em;
+    left: 2em;
     width: 0.7em;
     height: 3em;
     background: #333;
