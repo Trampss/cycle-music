@@ -8,7 +8,7 @@ export default ({ DOM$, props$ }) => {
   // Create characters component with props
   const piano = isolate(Piano, 'piano')({ DOM$, props$: xs.of({ notes: NOTES }) })
 
-  const change$ = name => DOM$
+  const change = name => DOM$
     .select(`input.${name}`)
     .events('change')
     .map(e => e.target.checked)
@@ -22,10 +22,10 @@ export default ({ DOM$, props$ }) => {
     ]))
 
   const characters$ = xs.combine(
-    change$('goron'),
-    change$('zora'),
-    change$('mojo'),
-    change$('link'),
+    change('goron'),
+    change('zora'),
+    change('mojo'),
+    change('link'),
   )
     .map(([goron, zora, mojo, link]) => ({ goron, zora, mojo, link }))
     .startWith({})
