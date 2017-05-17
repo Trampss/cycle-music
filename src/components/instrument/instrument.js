@@ -28,5 +28,6 @@ export default ({ NOTE$, props$ }) => {
   return {
     DOM$: vdom$,
     MUSIC$: addDelay(music$, ANIMATION_TIMEOUT),
+    NOTE$: stop$,
   }
 }

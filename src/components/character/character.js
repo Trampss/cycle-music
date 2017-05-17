@@ -3,8 +3,6 @@ import xs from 'xstream'
 import Instrument from '../instrument'
 
 export default ({ NOTE$, props$ }) => {
-  const addAnimate = (a, o) => Object.assign({}, o, { animate: a })
-
   // When the note must be playing by character
   const note$ = xs
     .combine(NOTE$, props$)
@@ -17,29 +15,26 @@ export default ({ NOTE$, props$ }) => {
     props$,
   })
 
-  // draw character
-  const characterDom$ = xs.merge(
-    note$.map(m => addAnimate(true, m)),
-    instrument.MUSIC$.map(m => addAnimate(false, m)),
+  // Number of notes that the character is still holding
+  const nbNotes$ = xs.merge(
+    note$.mapTo(1), // entering
+    instrument.MUSIC$.mapTo(-1), // leaving : the note is converted to music
   )
-  .startWith(addAnimate(false))
+  .fold((acc, curr) => acc + curr, 0)
+  .startWith(0)
 
-  // Combine all character DOM
-  // Draw :
-  // - Character, show animation
-  // - Note wire ( -> player )
-  // - Music wire ( -> speaker )
+  // DOM
   const vdom$ = xs
     .combine(
       props$,
-      characterDom$,
+      nbNotes$,
       instrument.DOM$,
     )
-    .map(([props, character, instrumentDom]) =>
+    .map(([props, nbNotes, instrumentDom]) =>
       div(`.${props.name}`,
         [
           img(
-            `.character ${character.animate ? '.animate' : ''}`,
+            `.character ${nbNotes > 0 ? '.animate' : ''}`,
             { props: { src: `/svg/characters/${props.name}.svg` } },
           ),
           instrumentDom,
