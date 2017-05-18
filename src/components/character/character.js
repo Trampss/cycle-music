@@ -1,6 +1,7 @@
 import { div, img } from '@cycle/dom'
 import xs from 'xstream'
 import Instrument from '../instrument'
+import { getAnimationClasses } from '../../utils'
 
 export default ({ NOTE$, props$ }) => {
   // When the note must be playing by character
@@ -15,26 +16,18 @@ export default ({ NOTE$, props$ }) => {
     props$,
   })
 
-  // Number of notes that the character is still holding
-  const nbNotes$ = xs.merge(
-    note$.mapTo(1), // entering
-    instrument.MUSIC$.mapTo(-1), // leaving : the note is converted to music
-  )
-  .fold((acc, curr) => acc + curr, 0)
-  .startWith(0)
-
   // DOM
   const vdom$ = xs
     .combine(
       props$,
-      nbNotes$,
+      getAnimationClasses(note$),
       instrument.DOM$,
     )
-    .map(([props, nbNotes, instrumentDom]) =>
+    .map(([props, animationClasses, instrumentDom]) =>
       div(`.${props.name}`,
         [
           img(
-            `.character ${nbNotes > 0 ? '.animate' : ''}`,
+            `.character ${animationClasses}`,
             { props: { src: `/svg/characters/${props.name}.svg` } },
           ),
           instrumentDom,

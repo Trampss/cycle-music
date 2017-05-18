@@ -42,7 +42,7 @@ export default ({ NOTE$, MUSIC$, MUSICS$, HTTP$ }) => {
     .flatten()
     .startWith(0)
 
-  const vdom$ = xs.combine(merge$, periodic$).debug()
+  const vdom$ = xs.combine(merge$, periodic$)
     .map(([s, i]) => {
       return div(`${className} ${s.stop && '.stop'}`, [
         div(style(!s.stop && i < time - 1, i), content),

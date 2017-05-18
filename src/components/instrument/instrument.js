@@ -1,8 +1,7 @@
 import { img } from '@cycle/dom'
 import xs from 'xstream'
 import { ANIMATION_TIMEOUT } from '../../config'
-import { STOP_EVENT } from '../../constant'
-import { addDelay } from '../../utils'
+import { getAnimationClasses, addDelay } from '../../utils'
 
 const className = '.instrument'
 
@@ -12,22 +11,18 @@ export default ({ NOTE$, props$ }) => {
     .combine(NOTE$, props$)
     .map(([note, props]) => Object.assign({}, note, { instrument: props.instrument }))
 
-  const stop$ = addDelay(music$, ANIMATION_TIMEOUT)
-    .map(() => STOP_EVENT)
-
   const vdom$ = xs
     .combine(
-      xs.merge(music$, stop$).startWith(STOP_EVENT),
+      getAnimationClasses(NOTE$),
       props$,
     )
-    .map(([music, props]) => img(
-      `${className}${music.stop ? '' : '.animate'}`,
+    .map(([animationClasses, props]) => img(
+      `${className} ${animationClasses}`,
       { props: { src: `/svg/instruments/${props.instrument}.svg` } },
     ))
 
   return {
     DOM$: vdom$,
     MUSIC$: addDelay(music$, ANIMATION_TIMEOUT),
-    NOTE$: stop$,
   }
 }
