@@ -28,7 +28,7 @@ export default ({ DOM$, props$ }) => {
     .combine(
       characters$,
       piano.NOTE$)
-    .map(([c, note]) => Object.assign({}, note, { characters: c }))
+    .map(([c, note]) => ({ ...note, characters: c }))
 
   const vdom$ = xs
     .combine(props$, piano.DOM$)

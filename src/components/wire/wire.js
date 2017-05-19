@@ -27,7 +27,7 @@ export default ({ NOTE$, MUSIC$, MUSICS$, HTTP$ }) => {
     MUSIC$ || xs.empty(),
     MUSICS$ || xs.empty(),
     HTTP$ || xs.empty(),
-  ).map(s => (Object.assign({}, s, { periodic: xs.periodic(period) })))
+  ).map(s => ({ ...s, periodic: xs.periodic(period) }))
 
   // Add a 'stop' event after timeout
   const stop$ = addDelay(start$, ANIMATION_TIMEOUT)
