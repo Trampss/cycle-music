@@ -1,5 +1,4 @@
-export const WIRE_TIMEOUT = 2000
-export const ANIMATION_TIMEOUT = 1000
+export const ANIMATION_TIMEOUT = 500
 export const NOTES = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 export const WITHOUT_SHARP = ['E', 'B']
 
@@ -16,3 +15,5 @@ export const INSTRUMENTS = [
   'edm',
   'organ',
 ]
+
+export const STOP_EVENT = { stop: true }

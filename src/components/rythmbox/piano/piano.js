@@ -18,7 +18,7 @@ export default ({ DOM$, props$ }) => {
   const vdom$ = touches$
     .map(touches => xs.combine(...touches.map(t => t.DOM$)))
     .flatten()
-    .map(dom => ul('.piano', dom))
+    .map(children => ul('.piano', children))
 
   const note$ = touches$
     .map(touches => xs.merge(...touches.map(t => t.NOTE$)))

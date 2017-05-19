@@ -1,7 +1,7 @@
 import xs from 'xstream'
 import isolate from '@cycle/isolate'
 import { div, input } from '@cycle/dom'
-import { NOTES } from '../../config'
+import { NOTES } from '../../constants'
 import Piano from './piano'
 
 export default ({ DOM$, props$ }) => {
@@ -13,13 +13,6 @@ export default ({ DOM$, props$ }) => {
     .events('change')
     .map(e => e.target.checked)
     .startWith(false)
-
-  const vdom$ = xs
-    .combine(piano.DOM$, props$)
-    .map(([pianoDom, props]) => div('.rythmbox', [
-      div('.players', [...props.map(({ name }) => div([input(`.${name}`, { attrs: { type: 'checkbox' } }), name]))]),
-      pianoDom,
-    ]))
 
   const characters$ = xs.combine(
     change('goron'),
@@ -36,6 +29,13 @@ export default ({ DOM$, props$ }) => {
       characters$,
       piano.NOTE$)
     .map(([c, note]) => Object.assign({}, note, { characters: c }))
+
+  const vdom$ = xs
+    .combine(props$, piano.DOM$)
+    .map(([props, children]) => div('.rythmbox', [
+      div('.players', [...props.map(({ name }) => div([input(`.${name}`, { attrs: { type: 'checkbox' } }), name]))]),
+      children,
+    ]))
 
   return {
     DOM$: vdom$,

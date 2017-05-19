@@ -5,9 +5,6 @@ import Cyclejs from './components/cyclejs'
 import Drivers from './components/drivers'
 
 export default ({ DOM$ }) => {
-  /*
-   Create World
-   */
   const world = World({ DOM$ })
 
   const cyclejs = Cyclejs({ MUSIC$: world.MUSIC$ })

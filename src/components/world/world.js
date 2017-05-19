@@ -5,7 +5,7 @@ import Rythmbox from '../rythmbox'
 import Merge from '../merge'
 import Character from '../character'
 import Wire from '../wire'
-import { CHARACTERS } from '../../config'
+import { CHARACTERS } from '../../constants'
 
 export default ({ DOM$ }) => {
   // Create Rythmbox

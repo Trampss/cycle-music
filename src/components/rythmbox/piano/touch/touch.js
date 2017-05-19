@@ -1,6 +1,6 @@
 import { div, li, span } from '@cycle/dom'
 import xs from 'xstream'
-import { WITHOUT_SHARP } from '../../../../config'
+import { WITHOUT_SHARP } from '../../../../constants'
 
 const className = '.touch'
 
@@ -15,8 +15,10 @@ export default ({ DOM$, props$ }) => {
     .events('click')
     .map(() => ({ withSharp: true }))
 
+  const action$ = xs.merge(clickTouch$, clickSharp$)
+
   const note$ = xs
-    .combine(props$, xs.merge(clickTouch$, clickSharp$))
+    .combine(props$, action$)
     .map(([props, click]) => ({
       note: `${props.note}${click.withSharp ? '#' : ''}`,
       character: props.character,

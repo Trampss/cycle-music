@@ -23,14 +23,14 @@ export default ({ NOTE$, props$ }) => {
       getAnimationClasses(note$),
       instrument.DOM$,
     )
-    .map(([props, animationClasses, instrumentDom]) =>
+    .map(([props, animationClasses, children]) =>
       div(`.${props.name}`,
         [
           img(
             `.character ${animationClasses}`,
             { props: { src: `/svg/characters/${props.name}.svg` } },
           ),
-          instrumentDom,
+          children,
         ],
       ),
     )

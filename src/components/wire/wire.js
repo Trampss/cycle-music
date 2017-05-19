@@ -1,7 +1,6 @@
 import { div } from '@cycle/dom'
 import xs from 'xstream'
-import { WIRE_TIMEOUT } from '../../config'
-import { STOP_EVENT } from '../../constant'
+import { ANIMATION_TIMEOUT, STOP_EVENT } from '../../constants'
 import { addDelay } from '../../utils'
 
 export default ({ NOTE$, MUSIC$, MUSICS$, HTTP$ }) => {
@@ -14,7 +13,7 @@ export default ({ NOTE$, MUSIC$, MUSICS$, HTTP$ }) => {
   const translate = (a, i) => `${MUSICS$ ? translateX(a, i) : ''} ${MUSIC$ ? translateY(a, -i) : ''} ${NOTE$ ? translateY(a, -i) : ''}`
 
   const time = 15
-  const period = WIRE_TIMEOUT / time
+  const period = ANIMATION_TIMEOUT / time
   const style = (animate, i) => ({
     style: {
       visibility: animate ? 'visible' : 'hidden',
@@ -31,7 +30,7 @@ export default ({ NOTE$, MUSIC$, MUSICS$, HTTP$ }) => {
   ).map(s => (Object.assign({}, s, { periodic: xs.periodic(period) })))
 
   // Add a 'stop' event after timeout
-  const stop$ = addDelay(start$, WIRE_TIMEOUT)
+  const stop$ = addDelay(start$, ANIMATION_TIMEOUT)
     .map(() => STOP_EVENT)
 
   const merge$ = xs.merge(start$, stop$)
@@ -52,9 +51,9 @@ export default ({ NOTE$, MUSIC$, MUSICS$, HTTP$ }) => {
 
   return {
     DOM$: vdom$,
-    MUSIC$: addDelay(MUSIC$, WIRE_TIMEOUT),
-    MUSICS$: addDelay(MUSICS$, WIRE_TIMEOUT),
-    NOTE$: addDelay(NOTE$, WIRE_TIMEOUT),
-    HTTP$: addDelay(HTTP$, WIRE_TIMEOUT),
+    MUSIC$: addDelay(MUSIC$),
+    MUSICS$: addDelay(MUSICS$),
+    NOTE$: addDelay(NOTE$),
+    HTTP$: addDelay(HTTP$),
   }
 }

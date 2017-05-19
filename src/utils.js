@@ -1,8 +1,9 @@
 import xs from 'xstream'
 import delay from 'xstream/extra/delay'
-import { ANIMATION_TIMEOUT } from './config'
+import { ANIMATION_TIMEOUT } from './constants'
 
-export const addDelay = (stream$, time) => stream$ && stream$.compose(delay(time))
+export const addDelay = (stream$, time = ANIMATION_TIMEOUT) =>
+  stream$ && stream$.compose(delay(time))
 
 export const getAnimationClasses = (stream$, timeout = ANIMATION_TIMEOUT) => {
   return xs

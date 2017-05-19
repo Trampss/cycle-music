@@ -6,7 +6,7 @@ export default ({ MUSIC$ }) => {
   const speaker = Speaker({ MUSIC$ })
 
   // Combine all dom component
-  const vdom$ = speaker.DOM$.map(driversDom => div('.drivers', driversDom))
+  const vdom$ = speaker.DOM$.map(children => div('.drivers', children))
 
   return {
     DOM$: vdom$,

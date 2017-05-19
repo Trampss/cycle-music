@@ -1,6 +1,5 @@
 import { img } from '@cycle/dom'
 import xs from 'xstream'
-import { ANIMATION_TIMEOUT } from '../../config'
 import { getAnimationClasses, addDelay } from '../../utils'
 
 const className = '.instrument'
@@ -13,16 +12,16 @@ export default ({ NOTE$, props$ }) => {
 
   const vdom$ = xs
     .combine(
-      getAnimationClasses(NOTE$),
       props$,
+      getAnimationClasses(NOTE$),
     )
-    .map(([animationClasses, props]) => img(
+    .map(([props, animationClasses]) => img(
       `${className} ${animationClasses}`,
       { props: { src: `/svg/instruments/${props.instrument}.svg` } },
     ))
 
   return {
     DOM$: vdom$,
-    MUSIC$: addDelay(music$, ANIMATION_TIMEOUT),
+    MUSIC$: addDelay(music$),
   }
 }
