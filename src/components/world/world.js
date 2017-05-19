@@ -21,12 +21,12 @@ export default ({ DOM$ }) => {
   // Create Character connected to note wire
   .map(({ wireNote, props }) => {
     const character = isolate(Character, `character-${props.name}`)({ NOTE$: wireNote.NOTE$, props$: xs.of(props) })
-    return Object.assign({}, { wireNote, props }, { character })
+    return { wireNote, props, character }
   })
   // Create music wire - connected after character -
   .map(({ wireNote, character, props }) => {
     const wireMusic = isolate(Wire, `wireMusic-${props.name}`)({ MUSIC$: character.MUSIC$ })
-    return Object.assign({}, { wireNote, character, props }, { wireMusic })
+    return { wireNote, character, props, wireMusic }
   })
 
   // Merge Music wire
