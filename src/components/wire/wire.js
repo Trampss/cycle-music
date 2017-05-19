@@ -33,12 +33,13 @@ export default ({ NOTE$, MUSIC$, MUSICS$, HTTP$ }) => {
   ).map(() => {
     const steps = []
     for (let i = 0; i < STEPS; i += 1) {
-      steps.push(addDelay(xs.of({ step: i, stop: (i === STEPS - 1) }), STEP_TIMEOUT * i))
+      const stepEvent = xs.of({ step: i, stop: (i === STEPS - 1) })
+      steps.push(addDelay(stepEvent, STEP_TIMEOUT * i))
     }
     return xs.merge(...steps)
   })
   .flatten()
-  .startWith({ stop: true })
+  .startWith({ stop: true }) // doesn't show at first
 
   const vdom$ = animation$
     .map(animation => div(`${className} ${animation.stop && '.stop'}`, [
