@@ -1,6 +1,6 @@
 import { div } from '@cycle/dom'
 import xs from 'xstream'
-import { ANIMATION_TIMEOUT, STOP_EVENT } from '../../constants'
+import { ANIMATION_TIMEOUT } from '../../constants'
 import { addDelay } from '../../utils'
 
 const STEPS = 15
@@ -25,33 +25,25 @@ export default ({ NOTE$, MUSIC$, MUSICS$, HTTP$ }) => {
   })
 
   // animation stream
-  // - start
-  const start$ = xs.merge(
+  const animation$ = xs.merge(
     NOTE$ || xs.empty(),
     MUSIC$ || xs.empty(),
     MUSICS$ || xs.empty(),
     HTTP$ || xs.empty(),
-  ).map(s => (Object.assign({}, s, { periodic: xs.periodic(STEP_TIMEOUT) })))
-  // - stop
-  const stop$ = addDelay(start$, ANIMATION_TIMEOUT)
-  // - animation stream
-  const animation$ = xs.merge(start$, stop$)
-    .startWith(STOP_EVENT)
+  ).map(() => {
+    const steps = []
+    for (let i = 0; i < STEPS; i += 1) {
+      steps.push(addDelay(xs.of({ step: i, stop: (i === STEPS - 1) }), STEP_TIMEOUT * i))
+    }
+    return xs.merge(...steps)
+  })
+  .flatten()
+  .startWith({ stop: true })
 
-  // add steps to animation stream
-  const periodic$ = animation$
-    .map(m => m.periodic || xs.empty())
-    .flatten()
-    .startWith(0)
-    .debug('periodic') // FIXME : this debug shows that we have a problem there : periodic doesn't stop
-
-  const vdom$ = xs.combine(animation$, periodic$)
-    .map(([animation, i]) => {
-      return div(`${className} ${animation.stop && '.stop'}`, [
-        div(style(!animation.stop && i < STEPS - 1, i), content),
-      ])
-    },
-  )
+  const vdom$ = animation$
+    .map(animation => div(`${className} ${animation.stop && '.stop'}`, [
+      div(style(!animation.stop, animation.step), content),
+    ]))
 
   return {
     DOM$: vdom$,
