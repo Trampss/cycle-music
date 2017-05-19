@@ -1,15 +1,13 @@
 import { div } from '@cycle/dom'
 import Speaker from '../speaker'
 
-export default ({ MUSIC$ }) => {
-  // Create Speaker
-  const speaker = Speaker({ MUSIC$ })
+const view = speaker => speaker.DOM$.map(children => div('.drivers', children))
 
-  // Combine all dom component
-  const vdom$ = speaker.DOM$.map(children => div('.drivers', children))
+export default (sources) => {
+  const speaker = Speaker(sources)
 
   return {
-    DOM$: vdom$,
+    DOM$: view(speaker),
     MUSIC$: speaker.MUSIC$,
   }
 }

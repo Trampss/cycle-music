@@ -1,42 +1,47 @@
 import { div, img } from '@cycle/dom'
 import xs from 'xstream'
 import Instrument from '../instrument'
-import { getAnimationClasses } from '../../utils'
+import { getNumber, getClassNameFromNumber } from '../../utils'
 
-export default ({ NOTE$, props$ }) => {
-  // When the note must be playing by character
-  const note$ = xs
-    .combine(NOTE$, props$)
-    .filter(([note, props]) => note.characters[props.name])
-    .map(([note]) => note)
-
-  // instrument transform note
-  const instrument = Instrument({
-    NOTE$: note$,
+const filter = ({ NOTE$, props$ }) => {
+  return {
     props$,
-  })
+    NOTE$: xs
+      .combine(NOTE$, props$)
+      .filter(([note, props]) => note.characters[props.name])
+      .map(([note]) => note),
+  }
+}
 
-  // DOM
-  const vdom$ = xs
+const model = instrument => ({ props$, NOTE$ }) => (
+  xs
     .combine(
       props$,
-      getAnimationClasses(note$),
+      getNumber(NOTE$),
       instrument.DOM$,
     )
-    .map(([props, animationClasses, children]) =>
-      div(`.${props.name}`,
-        [
-          img(
-            `.character ${animationClasses}`,
-            { props: { src: `/svg/characters/${props.name}.svg` } },
-          ),
-          children,
-        ],
-      ),
-    )
+)
+
+const view = state$ => (
+  state$.map(([props, number, children]) =>
+    div(`.${props.name}`,
+      [
+        img(
+          `.character ${getClassNameFromNumber(number)}`,
+          { props: { src: `/svg/characters/${props.name}.svg` } },
+        ),
+        children,
+      ],
+    ),
+  )
+)
+
+export default (sources) => {
+  const filteredSources = filter(sources)
+  const instrument = Instrument(filteredSources)
 
   return {
-    DOM$: vdom$, // combine all flow of dom
+    DOM$: view(model(instrument)(filteredSources)), // combine all flow of dom
     MUSIC$: instrument.MUSIC$, // return flow of Music Wire
   }
 }

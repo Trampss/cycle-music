@@ -4,35 +4,48 @@ import { WITHOUT_SHARP } from '../../../../constants'
 
 const className = '.touch'
 
-export default ({ DOM$, props$ }) => {
+const intents = ({ DOM$ }) => {
   const clickTouch$ = DOM$
     .select(className)
     .events('click')
-    .map(() => ({ withSharp: false }))
 
   const clickSharp$ = DOM$
     .select('.sharp')
     .events('click')
-    .map(() => ({ withSharp: true }))
 
-  const action$ = xs.merge(clickTouch$, clickSharp$)
+  return {
+    clickTouch$,
+    clickSharp$,
+  }
+}
 
-  const note$ = xs
-    .combine(props$, action$)
-    .map(([props, click]) => ({
-      note: `${props.note}${click.withSharp ? '#' : ''}`,
+const note = sources => (actions) => {
+  return xs
+    .combine(
+      sources.props$,
+      xs.merge(
+        actions.clickTouch$.mapTo(false),
+        actions.clickSharp$.mapTo(true),
+      ),
+    )
+    .map(([props, clickSharp]) => ({
+      note: `${props.note}${clickSharp ? '#' : ''}`,
       character: props.character,
       time: 4, // time in second
     }))
+}
 
-  const vdom$ = props$
+const view = state$ => (
+  state$
     .map(props => li([
       div('.touch'),
       WITHOUT_SHARP.includes(props.note) ? '' : span('.sharp'),
     ]))
+)
 
+export default (sources) => {
   return {
-    DOM$: vdom$,
-    NOTE$: note$,
+    DOM$: view(sources.props$),
+    NOTE$: note(sources)(intents(sources)),
   }
 }

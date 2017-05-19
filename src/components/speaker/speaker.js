@@ -1,18 +1,21 @@
 import { img } from '@cycle/dom'
-import { getAnimationClasses } from '../../utils'
+import { getNumber, getClassNameFromNumber } from '../../utils'
 
-export default ({ MUSIC$ }) => {
-  const animation$ = MUSIC$
-    .map(music => music.time)
+const model = ({ MUSIC$ }) => getNumber(MUSIC$)
 
-  const vdom$ = getAnimationClasses(animation$)
-    .map(animationClasses => img(
-      `.speaker ${animationClasses}`,
-       { props: { src: 'svg/drivers/speaker.svg' } },
+const view = state$ => (
+  state$
+    .map(number => (
+      img(
+        `.speaker ${getClassNameFromNumber(number)}`,
+        { props: { src: 'svg/drivers/speaker.svg' } },
+      )
     ))
+)
 
+export default (sources) => {
   return {
-    DOM$: vdom$,
-    MUSIC$, // Speaker doesn't transform the music, it just 'prints' it
+    DOM$: view(model(sources)),
+    MUSIC$: sources.MUSIC$, // Speaker doesn't transform the music, it just 'prints' it
   }
 }

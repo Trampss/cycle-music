@@ -5,15 +5,16 @@ import { ANIMATION_TIMEOUT } from './constants'
 export const addDelay = (stream$, time = ANIMATION_TIMEOUT) =>
   stream$ && stream$.compose(delay(time))
 
-export const getAnimationClasses = (stream$, timeout = ANIMATION_TIMEOUT) => {
+export const getNumber = (stream$, timeout = ANIMATION_TIMEOUT) => {
   return xs
     .merge(
       stream$.mapTo(1),
       addDelay(stream$, timeout).mapTo(-1),
     )
     .fold((acc, curr) => acc + curr, 0)
-    .map((nb) => {
-      if (nb === 0) return ''
-      return `.animate .animate-${nb}`
-    })
+}
+
+export const getClassNameFromNumber = (nb) => {
+  if (nb === 0) return ''
+  return `.animate .animate-${nb}`
 }

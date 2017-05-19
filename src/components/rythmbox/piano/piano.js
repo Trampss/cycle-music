@@ -3,8 +3,8 @@ import isolate from '@cycle/isolate'
 import xs from 'xstream'
 import Touch from './touch'
 
-export default ({ DOM$, props$ }) => {
-  const touches$ = props$
+const touches = ({ DOM$, props$ }) => (
+  props$
     .map(({ notes }) => notes
       .map(note => ({ note }))
       .map(touchProps =>
@@ -14,18 +14,30 @@ export default ({ DOM$, props$ }) => {
         )({ DOM$, props$: xs.of(touchProps) }),
       ),
     )
+)
 
-  const vdom$ = touches$
-    .map(touches => xs.combine(...touches.map(t => t.DOM$)))
+const model = touches$ => (
+  touches$
+    .map(touchesComponents => xs.combine(...touchesComponents.map(t => t.DOM$)))
     .flatten()
+)
+
+const view = state$ => (
+  state$
     .map(children => ul('.piano', children))
+)
 
-  const note$ = touches$
-    .map(touches => xs.merge(...touches.map(t => t.NOTE$)))
+const note = touches$ => (
+  touches$
+    .map(touchesComponents => xs.merge(...touchesComponents.map(t => t.NOTE$)))
     .flatten()
+)
+
+export default (sources) => {
+  const touches$ = touches(sources)
 
   return {
-    DOM$: vdom$,
-    NOTE$: note$,
+    DOM$: view(model(touches$)),
+    NOTE$: note(touches$),
   }
 }

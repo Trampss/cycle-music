@@ -1,25 +1,30 @@
 import { img } from '@cycle/dom'
 import xs from 'xstream'
-import { getAnimationClasses, addDelay } from '../../utils'
+import { getNumber, getClassNameFromNumber, addDelay } from '../../utils'
 
-export default ({ MUSIC$, NOTE$, HTTP$ }) => {
-  const animate$ = xs.merge(
+const model = ({ MUSIC$, NOTE$, HTTP$ }) => getNumber(
+  xs.merge(
     MUSIC$ || xs.empty(),
     NOTE$ || xs.empty(),
     HTTP$ || xs.empty(),
-  )
+  ),
+)
 
-  const vdom$ = getAnimationClasses(animate$)
-    .map(animationClasses =>
+const view = state$ => (
+  state$
+    .map(number => (
       img(
-        `.cyclejs ${animationClasses}`,
+        `.cyclejs ${getClassNameFromNumber(number)}`,
         { props: { src: '/svg/libraries/cyclejs.svg' } },
-      ))
+      )
+    ))
+)
 
+export default (sources) => {
   return {
-    DOM$: vdom$,
-    MUSIC$: addDelay(MUSIC$),
-    NOTE$: addDelay(NOTE$),
-    HTTP$: addDelay(HTTP$),
+    DOM$: view(model(sources)),
+    MUSIC$: addDelay(sources.MUSIC$),
+    NOTE$: addDelay(sources.NOTE$),
+    HTTP$: addDelay(sources.HTTP$),
   }
 }
