@@ -3,48 +3,52 @@ import xs from 'xstream'
 import { ANIMATION_TIMEOUT, STOP_EVENT } from '../../constants'
 import { addDelay } from '../../utils'
 
+const STEPS = 15
+const STEP_TIMEOUT = ANIMATION_TIMEOUT / STEPS
+
+const step = (a, i) => (a ? i * 2 : 0)
+const flow = i => (i % 2 === 0 ? 1 : -1)
+const translateX = (a, i) => `translateX(${step(a, i)}vw) translateY(${flow(i)}vh)`
+const translateY = (a, i) => `translateY(${step(a, i)}vh) translateX(${flow(i)}vw)`
+
 export default ({ NOTE$, MUSIC$, MUSICS$, HTTP$ }) => {
   const className = `.wire ${MUSIC$ ? '.music' : ''} ${NOTE$ ? '.note' : ''} ${HTTP$ ? '.http' : ''}`
   const content = `${MUSICS$ ? '🎶🎶' : ''} ${MUSIC$ ? '🎶' : ''} ${NOTE$ ? '🎵' : ''} ${HTTP$ ? '💩' : ''}`
-  const step = (a, i) => (a ? i * 2 : 0)
-  const flow = i => (i % 2 === 0 ? 1 : -1)
-  const translateX = (a, i) => `translateX(${step(a, i)}vw) translateY(${flow(i)}vh)`
-  const translateY = (a, i) => `translateY(${step(a, i)}vh) translateX(${flow(i)}vw)`
   const translate = (a, i) => `${MUSICS$ ? translateX(a, i) : ''} ${MUSIC$ ? translateY(a, -i) : ''} ${NOTE$ ? translateY(a, -i) : ''}`
 
-  const time = 15
-  const period = ANIMATION_TIMEOUT / time
   const style = (animate, i) => ({
     style: {
       visibility: animate ? 'visible' : 'hidden',
-      transition: `transform ${period}ms`,
+      transition: `transform ${STEP_TIMEOUT}ms`,
       transform: animate && translate(animate, i),
     },
   })
 
+  // animation stream
+  // - start
   const start$ = xs.merge(
     NOTE$ || xs.empty(),
     MUSIC$ || xs.empty(),
     MUSICS$ || xs.empty(),
     HTTP$ || xs.empty(),
-  ).map(s => (Object.assign({}, s, { periodic: xs.periodic(period) })))
-
-  // Add a 'stop' event after timeout
+  ).map(s => (Object.assign({}, s, { periodic: xs.periodic(STEP_TIMEOUT) })))
+  // - stop
   const stop$ = addDelay(start$, ANIMATION_TIMEOUT)
-    .map(() => STOP_EVENT)
-
-  const merge$ = xs.merge(start$, stop$)
+  // - animation stream
+  const animation$ = xs.merge(start$, stop$)
     .startWith(STOP_EVENT)
 
-  const periodic$ = merge$
+  // add steps to animation stream
+  const periodic$ = animation$
     .map(m => m.periodic || xs.empty())
     .flatten()
     .startWith(0)
+    .debug('periodic') // FIXME : this debug shows that we have a problem there : periodic doesn't stop
 
-  const vdom$ = xs.combine(merge$, periodic$)
-    .map(([s, i]) => {
-      return div(`${className} ${s.stop && '.stop'}`, [
-        div(style(!s.stop && i < time - 1, i), content),
+  const vdom$ = xs.combine(animation$, periodic$)
+    .map(([animation, i]) => {
+      return div(`${className} ${animation.stop && '.stop'}`, [
+        div(style(!animation.stop && i < STEPS - 1, i), content),
       ])
     },
   )
