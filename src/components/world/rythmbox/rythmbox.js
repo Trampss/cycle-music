@@ -1,7 +1,7 @@
 import xs from 'xstream'
 import isolate from '@cycle/isolate'
 import { div, input } from '@cycle/dom'
-import { NOTES } from '../../constants'
+import { NOTES } from '../../../constants'
 import Piano from './piano'
 
 const intents = ({ DOM$ }) => {

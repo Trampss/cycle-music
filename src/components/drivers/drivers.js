@@ -1,5 +1,5 @@
 import { div } from '@cycle/dom'
-import Speaker from '../speaker'
+import Speaker from './speaker'
 
 const view = speaker => speaker.DOM$.map(children => div('.drivers', children))
 

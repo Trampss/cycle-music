@@ -1,6 +1,6 @@
 import { img } from '@cycle/dom'
 import xs from 'xstream'
-import { getNumber, getClassNameFromNumber, addDelay } from '../../utils'
+import { getNumber, getClassNameFromNumber, addDelay } from '../../../../utils'
 
 const music = ({ NOTE$, props$ }) => (
   addDelay(xs

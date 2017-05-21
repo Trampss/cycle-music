@@ -1,7 +1,7 @@
 import { div, img } from '@cycle/dom'
 import xs from 'xstream'
-import Instrument from '../instrument'
-import { getNumber, getClassNameFromNumber } from '../../utils'
+import Instrument from './instrument'
+import { getNumber, getClassNameFromNumber } from '../../../utils'
 
 const filter = ({ NOTE$, props$ }) => {
   return {

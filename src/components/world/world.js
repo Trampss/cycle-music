@@ -1,10 +1,10 @@
 import xs from 'xstream'
 import { div } from '@cycle/dom'
 import isolate from '@cycle/isolate'
-import Rythmbox from '../rythmbox'
-import Merge from '../merge'
-import Character from '../character'
-import Wire from '../wire'
+import Rythmbox from './rythmbox'
+import Merge from './merge'
+import Character from './character'
+import Wire from './wire'
 import { CHARACTERS } from '../../constants'
 
 export default ({ DOM$ }) => {

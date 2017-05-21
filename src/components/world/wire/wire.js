@@ -1,7 +1,7 @@
 import { div } from '@cycle/dom'
 import xs from 'xstream'
-import { ANIMATION_TIMEOUT } from '../../constants'
-import { addDelay } from '../../utils'
+import { ANIMATION_TIMEOUT } from '../../../constants'
+import { addDelay } from '../../../utils'
 
 const STEPS = 15
 const STEP_TIMEOUT = ANIMATION_TIMEOUT / STEPS

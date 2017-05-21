@@ -1,5 +1,5 @@
 import { img } from '@cycle/dom'
-import { getNumber, getClassNameFromNumber } from '../../utils'
+import { getNumber, getClassNameFromNumber } from '../../../utils'
 
 const model = ({ MUSIC$ }) => getNumber(MUSIC$)
 

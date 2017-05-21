@@ -1,6 +1,6 @@
 import { div, li, span } from '@cycle/dom'
 import xs from 'xstream'
-import { WITHOUT_SHARP } from '../../../../constants'
+import { WITHOUT_SHARP } from '../../../../../constants'
 
 const className = '.touch'
 
