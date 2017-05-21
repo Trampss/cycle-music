@@ -1,75 +1,35 @@
 import xs from 'xstream'
-import isolate from '@cycle/isolate'
-import { div, input } from '@cycle/dom'
-import { NOTES } from '../../constants'
+import { div } from '@cycle/dom'
+import { NOTES, CHARACTERS } from '../../constants'
 import Piano from './piano'
+import Characters from './characters'
 
-const intents = ({ DOM$ }) => {
-  const change = name => DOM$
-    .select(`input.${name}`)
-    .events('change')
-    .map(e => e.target.checked)
-
-  return {
-    goronSelected$: change('goron'),
-    zoraSelected$: change('zora'),
-    mojoSelected$: change('mojo'),
-    linkSelected$: change('link'),
-  }
-}
-
-const selectedCharacters = actions => (
-  xs
-    .merge(
-        actions.goronSelected$.map(selected => ({ goron: selected })),
-        actions.zoraSelected$.map(selected => ({ zora: selected })),
-        actions.mojoSelected$.map(selected => ({ mojo: selected })),
-        actions.linkSelected$.map(selected => ({ link: selected })),
-      )
-      .fold(
-        (acc, curr) => ({ ...acc, ...curr }),
-        { goron: false, zora: false, mojo: false, link: false },
-      )
-)
-
-const characterNote = pianoNote$ => state$ => (
+const note = piano => characters => (
   xs
     .combine(
-      state$
-        // only trigger an event if one of the character is selected
-        .filter(characters => (
-          characters.goron ||
-          characters.zora ||
-          characters.mojo ||
-          characters.link
-        )),
-      pianoNote$,
+      characters.state$,
+      piano.NOTE$,
     )
-    .map(([characters, note]) => ({
+    .map(([charactersState, pianoNote]) => ({
       // note
-      ...note,
+      ...pianoNote,
       // only the characters that are selected
-      characters: Object.keys(characters).filter(name => characters[name]),
+      characters: Object.keys(charactersState).filter(name => charactersState[name]),
     }))
 )
 
-const view = pianoDom$ => ({ props$ }) => (
-  xs.combine(
-    props$,
-    pianoDom$,
-  )
-    .map(([props, children]) => div('.rythmbox', [
-      div('.players', [...props.map(({ name }) => div([input(`.${name}`, { attrs: { type: 'checkbox' } }), name]))]),
-      children,
-    ]))
+const view = piano => characters => () => (
+  xs
+    .combine(characters.DOM$, piano.DOM$)
+    .map(children => div('.rythmbox', children))
 )
 
 export default (sources) => {
-  const piano = isolate(Piano, 'piano')({ DOM$: sources.DOM$, props$: xs.of({ notes: NOTES }) })
-
+  const piano = Piano({ DOM$: sources.DOM$, props$: xs.of({ notes: NOTES }) })
+  const characters = Characters({ DOM$: sources.DOM$, props$: xs.of({ characters: CHARACTERS }) })
 
   return {
-    DOM$: view(piano.DOM$)(sources),
-    NOTE$: characterNote(piano.NOTE$)(selectedCharacters(intents(sources))).debug('note'),
+    DOM$: view(piano)(characters)(sources),
+    NOTE$: note(piano)(characters),
   }
 }
