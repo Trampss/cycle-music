@@ -8,7 +8,7 @@ const filter = ({ NOTE$, props$ }) => {
     props$,
     NOTE$: xs
       .combine(NOTE$, props$)
-      .filter(([note, props]) => note.characters[props.name])
+      .filter(([note, props]) => note.characters.includes(props.name))
       .map(([note]) => note),
   }
 }

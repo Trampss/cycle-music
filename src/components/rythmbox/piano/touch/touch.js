@@ -30,7 +30,6 @@ const note = sources => (actions) => {
     )
     .map(([props, clickSharp]) => ({
       note: `${props.note}${clickSharp ? '#' : ''}`,
-      character: props.character,
       time: 4, // time in second
     }))
 }
