@@ -1,6 +1,6 @@
 import xs from 'xstream'
 import { div } from '@cycle/dom'
-import { NOTES, CHARACTERS } from '../../constants'
+import { NOTES, CHARACTERS } from '../../../constants'
 import Piano from './piano'
 import Characters from './characters'
 
