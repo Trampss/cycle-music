@@ -30,9 +30,9 @@ const model = actions => (
     .merge(...steps)
     .map(s => ({
       ...s,
-      className: `.${event.type}`,
+      className: `.wire .${event.type}`,
       content: getContent(event.type),
-      translate: (a, i) => (event.type === 'musics' ? translateX(a, i) : translateY(a, i)),
+      translate: (a, i) => (event.type === 'musics' ? translateX(a, i) : translateY(a, -i)),
     }))
   })
   .flatten()
@@ -45,11 +45,10 @@ const view = state$ =>
   ]))
 
 export default ({ NOTE$, MUSIC$, MUSICS$ }) => {
-
   const sources = xs.merge(
-    NOTE$.map(() => ({ type: 'note' })) || xs.empty(),
-    MUSIC$.map(() => ({ type: 'music' })) || xs.empty(),
-    MUSICS$.map(() => ({ type: 'musics' })) || xs.empty(),
+    (NOTE$ || xs.empty()).map(() => ({ type: 'note' })),
+    (MUSIC$ || xs.empty()).map(() => ({ type: 'music' })),
+    (MUSICS$ || xs.empty()).map(() => ({ type: 'musics' })),
   )
 
   return {
