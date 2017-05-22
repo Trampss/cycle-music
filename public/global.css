@@ -1,51 +1,45 @@
 body {
-    background-color: white;
+    margin: 0;
+    background: linear-gradient(to bottom, rgba(96, 62, 101, 1) 0%, rgba(96, 62, 101, 1) 46%, rgba(96, 62, 101, 1) 50%, rgba(33, 24, 38, 1) 51%, rgba(33, 24, 38, 1) 82%, rgba(33, 24, 38, 1) 96%, rgba(33, 24, 38, 1) 100%);
+    font-family: 'Roboto', sans-serif;
 }
 
-* {
-    transition: all 100ms;
+#app {
+    background: url(svg/embellishment/background.svg) no-repeat center;
+    background-size: contain;
 }
 
 .app {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    height: 96vh;
+    width: 96vw;
+    padding: 2vh 2vw;
 }
 
 .world, .libraries, .drivers {
     align-items: center;
     display: flex;
-    justify-content: space-between;
-    margin: 1em;
-    padding: 1em;
-    width: 95%;
-}
-
-.world > div.wire.music {
-    width: 150px;
-    transform-origin: left;
-    transform: translate(10em, -5em);
+    justify-content: space-around;
 }
 
 .world {
-    background-color: rgb(96, 62, 101);
-    border: .5em solid black;
+    flex-direction: column-reverse;
 }
 
 .libraries {
-    background-color: rgb(96, 62, 101);
-    border: .5em solid black;
     flex-direction: column;
 }
 
 .drivers {
-    background-color: rgb(96, 62, 101);
-    border: .5em solid black;
     flex-direction: column;
 }
 
 .cyclejs {
     width: 6em;
+    margin: 1em;
 }
 
 .title,
@@ -77,7 +71,6 @@ img.character {
 
 img.instrument {
     width: 5em;
-    position: relative;
     margin-left: -5em;
 }
 
@@ -95,6 +88,18 @@ img.cyclejs.animate {
     }
     to {
         transform: rotate(360deg);
+    }
+}
+
+@keyframes mergemove {
+    0% {
+        transform: scale(1,1);
+    }
+    50% {
+        transform: scale(2,2);
+    }
+    100% {
+        transform: scale(1,1);
     }
 }
 
@@ -126,30 +131,68 @@ img.character.animate {
     animation: speakermove 1s infinite;
 }
 
-.wire.music.stop, .wire.note.stop {
-    border: solid 1px black;
+.wire {
+    display: flex;
+    flex-direction: row;
+    height: 0;
+    width: 0;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wire > div {
+    font-size: 2em;
+}
+
+.wire.music.stop > div.animate,
+.wire.note.stop > div.animate {
+    background: transparent;
 }
 
 .wire.note {
-    border: solid 1px red;
-    transform-origin: right;
-    transform: translate(-10em, 5em);
+    transform: translateY(20vh);
 }
 
 .wire.music {
-    border: solid 1px yellow;
-    transform-origin: left;
-    transform: translate(10em, -5em);
+    background: yellow;
 }
 
 .characters {
     align-items: center;
     display: flex;
-    flex-direction: column;
-    flex-grow: 2;
+    flex-direction: row;
 }
 
-.characters > div {
+.player {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+    align-items: center;
+    align-self: stretch;
+}
+
+.merge > .wire {
+
+}
+
+img.merge {
+    width: 8em;
+}
+
+img.merge.animate {
+    animation: mergemove 1s infinite;
+    transform-origin: center;
+    transition: transform 1s;
+}
+
+.rythmbox > .characters {
+    display: flex;
+    justify-content: space-between;
+}
+
+.rythmbox > .characters > div {
+    color: white;
+}
+
+input[type=checkbox] {
+    margin-right: .2em;
 }
