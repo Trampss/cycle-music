@@ -9,54 +9,53 @@ const step = (a, i) => (a ? i * 2 : 0)
 const flow = i => (i % 2 === 0 ? 1 : -1)
 const translateX = (a, i) => `translateX(${step(a, i)}vw) translateY(${flow(i)}vh)`
 const translateY = (a, i) => `translateY(${step(a, i)}vh) translateX(${flow(i)}vw)`
-
-const intent = ({ NOTE$, MUSIC$, MUSICS$ }) =>
-  xs.merge(
-    NOTE$ || xs.empty(),
-    MUSIC$ || xs.empty(),
-    MUSICS$ || xs.empty(),
-  ).map(stream => ({
-    stream,
-    className: `.wire ${MUSIC$ ? '.music' : ''} ${NOTE$ ? '.note' : ''}`,
-    content: `${MUSICS$ ? '🎶🎶' : ''} ${MUSIC$ ? '🎶' : ''} ${NOTE$ ? '🎵' : ''}`,
-    translate: (a, i) =>
-      `${MUSICS$ ? translateX(a, i) : ''} ${MUSIC$ ? translateY(a, -i) : ''} ${NOTE$ ? translateY(a, -i) : ''}`,
-  }))
+const getContent = type => `${type === 'musics' ? '🎶🎶' : ''} ${type === 'music' ? '🎶' : ''} ${type === 'note' ? '🎵' : ''}`
+const style = (animate, translate, i) => ({
+  style: {
+    visibility: animate ? 'visible' : 'hidden',
+    transition: `transform ${STEP_TIMEOUT}ms`,
+    transform: animate && translate(animate, i),
+  },
+})
 
 const model = actions => (
   actions
-    .map((event) => {
-      const steps = []
-      for (let i = 0; i < STEPS; i += 1) {
-        const stepEvent = xs.of({ step: i, stop: (i === STEPS - 1) })
-        steps.push(addDelay(stepEvent, STEP_TIMEOUT * i))
-      }
-      return xs.merge(...steps).map(s => ({ ...s, ...event }))
-    })
-    .flatten()
-    .startWith(STOP_EVENT)
+  .map((event) => {
+    const steps = []
+    for (let i = 0; i < STEPS; i += 1) {
+      const stepEvent = xs.of({ step: i, stop: (i === STEPS - 1) })
+      steps.push(addDelay(stepEvent, STEP_TIMEOUT * i))
+    }
+    return xs
+    .merge(...steps)
+    .map(s => ({
+      ...s,
+      className: `.${event.type}`,
+      content: getContent(event.type),
+      translate: (a, i) => (event.type === 'musics' ? translateX(a, i) : translateY(a, i)),
+    }))
+  })
+  .flatten()
+  .startWith(STOP_EVENT)
 )
 
-const view = (state$) => {
-  const style = (animate, translate, i) => ({
-    style: {
-      visibility: animate ? 'visible' : 'hidden',
-      transition: `transform ${STEP_TIMEOUT}ms`,
-      transform: animate && translate(animate, i),
-    },
-  })
+const view = state$ =>
+  state$.map(state => div(`${state.className} ${state.stop && '.stop'}`, [
+    div(style(!state.stop, state.translate, state.step), state.content),
+  ]))
 
-  return state$
-    .map(state => div(`${state.className} ${state.stop && '.stop'}`, [
-      div(style(!state.stop, state.translate, state.step), state.content),
-    ]))
-}
+export default ({ NOTE$, MUSIC$, MUSICS$ }) => {
 
-export default (sources) => {
+  const sources = xs.merge(
+    NOTE$.map(() => ({ type: 'note' })) || xs.empty(),
+    MUSIC$.map(() => ({ type: 'music' })) || xs.empty(),
+    MUSICS$.map(() => ({ type: 'musics' })) || xs.empty(),
+  )
+
   return {
-    DOM$: view(model(intent(sources))),
-    MUSIC$: addDelay(sources.MUSIC$),
-    MUSICS$: addDelay(sources.MUSICS$),
-    NOTE$: addDelay(sources.NOTE$),
+    DOM$: view(model(sources)),
+    MUSIC$: addDelay(MUSIC$),
+    MUSICS$: addDelay(MUSICS$),
+    NOTE$: addDelay(NOTE$),
   }
 }
