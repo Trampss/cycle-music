@@ -37,7 +37,7 @@ const note = sources => (actions) => {
 const view = state$ => (
   state$
     .map(props => li([
-      div('.touch'),
+      div('.touch', [props.note]),
       WITHOUT_SHARP.includes(props.note) ? '' : span('.sharp'),
     ]))
 )
