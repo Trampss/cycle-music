@@ -1,4 +1,4 @@
-import { div } from '@cycle/dom'
+import { div, img } from '@cycle/dom'
 import xs from 'xstream'
 import { ANIMATION_TIMEOUT, STOP_EVENT } from '../../../constants'
 import { addDelay } from '../../../utils'
@@ -9,13 +9,10 @@ const step = (a, i) => (a ? i * 2 : 0)
 const flow = i => (i % 2 === 0 ? 1 : -1)
 const translateX = (a, i) => `translateX(${step(a, i)}vw) translateY(${flow(i)}vh)`
 const translateY = (a, i) => `translateY(${step(a, i)}vh) translateX(${flow(i)}vw)`
-const getContent = type => `${type === 'musics' ? '🎶🎶' : ''} ${type === 'music' ? '🎶' : ''} ${type === 'note' ? '🎵' : ''}`
 const style = (animate, translate, i) => ({
-  style: {
-    visibility: animate ? 'visible' : 'hidden',
-    transition: `transform ${STEP_TIMEOUT}ms`,
-    transform: animate && translate(animate, i),
-  },
+  visibility: animate ? 'visible' : 'hidden',
+  transition: `transform ${STEP_TIMEOUT}ms`,
+  transform: animate && translate(animate, i),
 })
 
 const model = actions => (
@@ -31,7 +28,7 @@ const model = actions => (
     .map(s => ({
       ...s,
       className: `.wire .${event.type}`,
-      content: getContent(event.type),
+      content: event.type,
       translate: (a, i) => (event.type === 'musics' ? translateX(a, i) : translateY(a, -i)),
     }))
   })
@@ -41,7 +38,10 @@ const model = actions => (
 
 const view = state$ =>
   state$.map(state => div(`${state.className} ${state.stop && '.stop'}`, [
-    div(style(!state.stop, state.translate, state.step), state.content),
+    img({
+      style: style(!state.stop, state.translate, state.step),
+      props: { src: `/svg/notes/${state.content}.svg` },
+    }),
   ]))
 
 export default ({ NOTE$, MUSIC$, MUSICS$ }) => {
