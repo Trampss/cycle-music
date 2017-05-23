@@ -20,6 +20,6 @@ export const STOP_EVENT = { stop: true }
 
 export const CREATORS = [
   { name: 'Marine CRESPEL', avatar: '/creators/marine.jpg', twitter: 'MarineCre' },
-  { name: 'Guillaume CRESPEL', avatar: '/creators/guillaume.jpg', twitter: 'guillaumecrespel' },
+  { name: 'Guillaume CRESPEL', avatar: '/creators/guillaume.jpg', twitter: 'guillaumcrespel' },
   { name: 'Fabien JUIF', avatar: '/creators/fabien.jpg', twitter: 'fabienjuif' },
 ]
