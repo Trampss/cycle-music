@@ -29,6 +29,7 @@ body {
     height: 6em;
     position: relative;
     margin: 3em 0;
+    text-decoration: none;
 }
 
 .creators {
