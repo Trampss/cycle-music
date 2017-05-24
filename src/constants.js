@@ -16,8 +16,6 @@ export const INSTRUMENTS = [
   'organ',
 ]
 
-export const STOP_EVENT = { stop: true }
-
 export const CREATORS = [
   { name: 'Marine CRESPEL', avatar: '/creators/marine.jpg', link: 'http://marinecrespel.fr/' },
   { name: 'Guillaume CRESPEL', avatar: '/creators/guillaume.jpg', link: 'https://twitter.com/guillaumcrespel' },
