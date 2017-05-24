@@ -1,9 +1,9 @@
 import { div, a } from '@cycle/dom'
 
 const view = ({ props$ }) => props$.map(
-  ({ name, avatar, twitter }) => a(
+  ({ name, avatar, link }) => a(
     '.creator',
-    { props: { href: `https://twitter.com/${twitter}` } },
+    { props: { href: link } },
     [
       div('.avatar', { style: { backgroundImage: `url('${avatar}')` } }),
       div('.name', name),
