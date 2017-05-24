@@ -9,10 +9,10 @@ const step = (a, i) => (a ? i * 2 : 0)
 const flow = i => (i % 2 === 0 ? 1 : -1)
 const translateX = (a, i) => `translateX(${step(a, i)}vw) translateY(${flow(i)}vh)`
 const translateY = (a, i) => `translateY(${step(a, i)}vh) translateX(${flow(i)}vw)`
-const style = (animate, translate, i) => ({
+const style = (animate, direction, i) => ({
   visibility: animate ? 'visible' : 'hidden',
   transition: `transform ${STEP_TIMEOUT}ms`,
-  transform: animate && translate(animate, i),
+  transform: animate && direction === 'top' ? translateX(animate, i) : translateY(animate, -i),
 })
 
 const model = actions => (
@@ -27,9 +27,8 @@ const model = actions => (
     .merge(...steps)
     .map(s => ({
       ...s,
-      className: `.wire .${event.type}`,
-      content: event.type,
-      translate: (a, i) => (event.type === 'musics' ? translateX(a, i) : translateY(a, -i)),
+      ...event,
+      direction: event.type === 'musics' ? 'top' : 'right',
     }))
   })
   .flatten()
@@ -37,24 +36,25 @@ const model = actions => (
 )
 
 const view = state$ =>
-  state$.map(state => div(`${state.className} ${state.stop && '.stop'}`, [
+  state$.map(state => div(`.wire ${state.type} ${state.stop && '.stop'}`, [
     img({
-      style: style(!state.stop, state.translate, state.step),
-      props: { src: `/svg/notes/${state.content}.svg` },
+      style: style(!state.stop, state.direction, state.step),
+      props: { src: `/svg/notes/${state.type}.svg` },
     }),
   ]))
 
-export default ({ NOTE$, MUSIC$, MUSICS$ }) => {
-  const sources = xs.merge(
+const mergeStream = ({ NOTE$, MUSIC$, MUSICS$ }) =>
+  xs.merge(
     (NOTE$ || xs.empty()).map(() => ({ type: 'note' })),
     (MUSIC$ || xs.empty()).map(() => ({ type: 'music' })),
     (MUSICS$ || xs.empty()).map(() => ({ type: 'musics' })),
   )
 
+export default (sources) => {
   return {
-    DOM$: view(model(sources)),
-    MUSIC$: addDelay(MUSIC$),
-    MUSICS$: addDelay(MUSICS$),
-    NOTE$: addDelay(NOTE$),
+    DOM$: view(model(mergeStream(sources))),
+    MUSIC$: addDelay(sources.MUSIC$),
+    MUSICS$: addDelay(sources.MUSICS$),
+    NOTE$: addDelay(sources.NOTE$),
   }
 }
