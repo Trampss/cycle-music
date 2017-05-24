@@ -17,3 +17,9 @@ export const INSTRUMENTS = [
 ]
 
 export const STOP_EVENT = { stop: true }
+
+export const CREATORS = [
+  { name: 'Marine CRESPEL', avatar: '/creators/marine.jpg', link: 'http://marinecrespel.fr/' },
+  { name: 'Guillaume CRESPEL', avatar: '/creators/guillaume.jpg', link: 'https://twitter.com/guillaumcrespel' },
+  { name: 'Fabien JUIF', avatar: '/creators/fabien.jpg', link: 'https://twitter.com/fabienjuif' },
+]
