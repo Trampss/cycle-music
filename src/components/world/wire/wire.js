@@ -45,9 +45,9 @@ const view = state$ =>
 
 const mergeStream = ({ NOTE$, MUSIC$, MUSICS$ }) =>
   xs.merge(
-    (NOTE$ || xs.empty()).map(() => ({ type: 'note' })),
-    (MUSIC$ || xs.empty()).map(() => ({ type: 'music' })),
-    (MUSICS$ || xs.empty()).map(() => ({ type: 'musics' })),
+    (NOTE$ || xs.empty()).mapTo({ type: 'note' }),
+    (MUSIC$ || xs.empty()).mapTo({ type: 'music' }),
+    (MUSICS$ || xs.empty()).mapTo({ type: 'musics' }),
   )
 
 export default (sources) => {
