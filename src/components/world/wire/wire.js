@@ -6,7 +6,7 @@ import { addDelay } from '../../../utils'
 const STEPS = 15
 const STEP_TIMEOUT = ANIMATION_TIMEOUT / STEPS
 const getStep = (stop, step) => (stop ? 0 : step * 2)
-const flow = step => (step % 2 === 0 ? step : -1)
+const flow = step => (step % 2 === 0 ? 1 : -1)
 const translateX = (stop, step) => `translateX(${getStep(stop, step)}vw) translateY(${flow(step)}vh)`
 const translateY = (stop, step) => `translateY(${getStep(stop, step)}vh) translateX(${flow(step)}vw)`
 const style = ({ stop, step, type }) => ({
