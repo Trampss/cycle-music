@@ -14,8 +14,8 @@ const view = state$ => (
     ))
 )
 
-export default (/* MUSICS */) => {
-  const MUSICS$ = xs.empty()
+export default (MUSICS) => {
+  const MUSICS$ = xs.merge(...MUSICS)
 
   return {
     DOM$: view(model({ MUSICS$ })),
