@@ -4,7 +4,9 @@ import makeDom from './character.dom'
 const filter = ({ NOTE$, props }) => {
   return {
     props,
-    NOTE$,
+    NOTE$:
+      NOTE$
+        .filter(note => note.characters.includes(props.name)),
   }
 }
 
