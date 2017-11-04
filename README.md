@@ -1,5 +1,5 @@
 # Cycle Music
-![Screencapture](https://pbs.twimg.com/media/DBAOyg2XoAAUDjl.jpg:large)
+![Screencapture](https://i.goopics.net/01nxw.png)
 
 ## Sources
  - [reactive programming -medium- @tkssharma](https://medium.com/@tkssharma/reactive-programming-rx-js-introduction-32bf963eee1b)
