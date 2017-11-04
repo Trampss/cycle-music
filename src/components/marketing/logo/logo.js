@@ -2,7 +2,7 @@ import xs from 'xstream'
 import { img } from '@cycle/dom'
 
 const view = () => xs.of(
-  img('.logo', { props: { src: '/logo-web2day.png' } }),
+  img('.logo', { props: { src: '/logo-bdxio.png' } }),
 )
 
 export default () => {
