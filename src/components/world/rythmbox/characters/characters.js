@@ -3,12 +3,12 @@ import isolate from '@cycle/isolate'
 import { div } from '@cycle/dom'
 import Character from './character'
 
-const list = ({ props$, DOM$ }) => (
+const list = ({ props$, DOM }) => (
   props$
     .map(props => (
       props.characters
         .map(character => (
-          isolate(Character, character.name)({ DOM$, props$: xs.of(character) })
+          isolate(Character, character.name)({ DOM, props$: xs.of(character) })
         ))
     ))
 )
@@ -25,7 +25,7 @@ const model = children$ => () => (
 
 const view = children$ => () => (
   children$
-    .map(characters => xs.combine(...characters.map(character => character.DOM$)))
+    .map(characters => xs.combine(...characters.map(character => character.DOM)))
     .flatten()
     .map(children => div('.characters', children))
 )
@@ -35,7 +35,7 @@ export default (sources) => {
   const state$ = model(children$)()
 
   return {
-    DOM$: view(children$)(state$),
+    DOM: view(children$)(state$),
     state$,
   }
 }

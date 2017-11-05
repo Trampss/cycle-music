@@ -8,7 +8,7 @@ const model = ({ props$ }) => (
       xs
         .combine(
           ...creators.map(
-            creator => Creator({ props$: xs.of(creator) }).DOM$,
+            creator => Creator({ props$: xs.of(creator) }).DOM,
           ),
         )
     ))
@@ -21,6 +21,6 @@ const view = model$ => model$.map(
 
 export default (sources) => {
   return {
-    DOM$: view(model(sources).debug('model')),
+    DOM: view(model(sources).debug('model')),
   }
 }

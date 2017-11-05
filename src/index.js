@@ -6,8 +6,8 @@ import { music } from './drivers'
 const main = App
 
 const drivers = {
-  DOM$: makeDOMDriver('#app'),
-  MUSIC$: music,
+  DOM: makeDOMDriver('#app'),
+  MUSIC: music,
 }
 
 run(main, drivers)

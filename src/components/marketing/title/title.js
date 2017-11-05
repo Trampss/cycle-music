@@ -7,6 +7,6 @@ const view = () => xs.of(
 
 export default () => {
   return {
-    DOM$: view(),
+    DOM: view(),
   }
 }
