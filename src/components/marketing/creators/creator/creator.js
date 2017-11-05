@@ -13,6 +13,6 @@ const view = ({ props$ }) => props$.map(
 
 export default (sources) => {
   return {
-    DOM$: view(sources),
+    DOM: view(sources),
   }
 }

@@ -42,18 +42,18 @@ const view = state$ =>
     }),
   ]))
 
-const mergeStream = ({ NOTE$, MUSIC$, MUSICS$ }) =>
+const mergeStream = ({ NOTE, MUSIC, MUSICS }) =>
   xs.merge(
-    (NOTE$ || xs.empty()).mapTo({ type: 'note' }),
-    (MUSIC$ || xs.empty()).mapTo({ type: 'music' }),
-    (MUSICS$ || xs.empty()).mapTo({ type: 'musics' }),
+    (NOTE || xs.empty()).mapTo({ type: 'note' }),
+    (MUSIC || xs.empty()).mapTo({ type: 'music' }),
+    (MUSICS || xs.empty()).mapTo({ type: 'musics' }),
   )
 
 export default (sources) => {
   return {
-    DOM$: view(model(mergeStream(sources))),
-    MUSIC$: addDelay(sources.MUSIC$),
-    MUSICS$: addDelay(sources.MUSICS$),
-    NOTE$: addDelay(sources.NOTE$),
+    DOM: view(model(mergeStream(sources))),
+    MUSIC: addDelay(sources.MUSIC),
+    MUSICS: addDelay(sources.MUSICS),
+    NOTE: addDelay(sources.NOTE),
   }
 }

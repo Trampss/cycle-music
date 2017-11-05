@@ -1,12 +1,12 @@
 import xs from 'xstream'
 import { div, input } from '@cycle/dom'
 
-const intents = ({ DOM$, props$ }) => {
+const intents = ({ DOM, props$ }) => {
   return {
     selected$:
       props$
         .map(props => (
-          DOM$
+          DOM
             .select(`input.${props.name}`)
             .events('change')
             .map(e => e.target.checked)
@@ -31,7 +31,7 @@ export default (sources) => {
   const state$ = model(sources.props$)(intents(sources))
 
   return {
-    DOM$: view(sources.props$)(state$),
+    DOM: view(sources.props$)(state$),
     state$,
   }
 }

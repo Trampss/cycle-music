@@ -2,14 +2,14 @@ import { img } from '@cycle/dom'
 import xs from 'xstream'
 import { getNumber, getClassNameFromNumber, addDelay } from '../../../../utils'
 
-const music = ({ NOTE$, props$ }) => (
+const music = ({ NOTE, props$ }) => (
   addDelay(xs
-    .combine(NOTE$, props$)
+    .combine(NOTE, props$)
     .map(([note, props]) => ({ ...note, instrument: props.instrument })),
   )
 )
 
-const model = ({ NOTE$, props$ }) => xs.combine(props$, getNumber(NOTE$))
+const model = ({ NOTE, props$ }) => xs.combine(props$, getNumber(NOTE))
 
 const view = state$ => (
   state$
@@ -21,7 +21,7 @@ const view = state$ => (
 
 export default (sources) => {
   return {
-    DOM$: view(model(sources)),
-    MUSIC$: music(sources),
+    DOM: view(model(sources)),
+    MUSIC: music(sources),
   }
 }

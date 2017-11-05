@@ -4,12 +4,12 @@ import { WITHOUT_SHARP } from '../../../../../constants'
 
 const className = '.touch'
 
-const intents = ({ DOM$ }) => {
-  const clickTouch$ = DOM$
+const intents = ({ DOM }) => {
+  const clickTouch$ = DOM
     .select(className)
     .events('click')
 
-  const clickSharp$ = DOM$
+  const clickSharp$ = DOM
     .select('.sharp')
     .events('click')
 
@@ -44,7 +44,7 @@ const view = state$ => (
 
 export default (sources) => {
   return {
-    DOM$: view(sources.props$),
-    NOTE$: note(sources)(intents(sources)),
+    DOM: view(sources.props$),
+    NOTE: note(sources)(intents(sources)),
   }
 }
