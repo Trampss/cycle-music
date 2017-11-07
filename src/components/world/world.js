@@ -7,9 +7,9 @@ import Character from './character'
 import Wire from './wire'
 import { CHARACTERS } from '../../constants'
 
-export default ({ DOM$ }) => {
+export default ({ DOM }) => {
   // Create Rythmbox
-  const rythmbox = Rythmbox({ DOM$, props$: xs.of(CHARACTERS) })
+  const rythmbox = Rythmbox({ DOM, props$: xs.of(CHARACTERS) })
 
   // Create Characters object and connect with environment - between rythmbox and speaker -
   const connectedCharacters = CHARACTERS
@@ -35,31 +35,31 @@ export default ({ DOM$ }) => {
 
   // Draw DOM with all Component
   // Transform character object to flow of dom - Dom of wireNote, character and wireMusic -
-  const toCharacterDom$ = ({ wireNote, character, wireMusic }) =>
-    xs.combine(wireNote.DOM$, character.DOM$, wireMusic.DOM$).map(c => div('.player', c))
+  const toCharacterDOM = ({ wireNote, character, wireMusic }) =>
+    xs.combine(wireNote.DOM, character.DOM, wireMusic.DOM).map(c => div('.player', c))
 
   // Combine all flow of Dom character to one div
-  const charactersDom$ = xs.combine(
-    ...connectedCharacters.map(toCharacterDom$),
+  const charactersDOM = xs.combine(
+    ...connectedCharacters.map(toCharacterDOM),
   ).map(cs => div('.characters', cs))
 
-  const mergeDom$ = xs.combine(
-    merge.DOM$,
-    wireMerge.DOM$,
+  const mergeDOM = xs.combine(
+    merge.DOM,
+    wireMerge.DOM,
   )
     .map(mergeDom => div('.merge', mergeDom))
 
   // Combine all dom component
-  const vdom$ = xs
+  const vDOM = xs
   .combine(
-    rythmbox.DOM$,
-    charactersDom$,
-    mergeDom$,
+    rythmbox.DOM,
+    charactersDOM,
+    mergeDOM,
   )
   .map(worldDom => div('.world', worldDom))
 
   return {
-    DOM$: vdom$,
+    DOM: vDOM,
     MUSIC$: wireMerge.MUSICS$,
   }
 }

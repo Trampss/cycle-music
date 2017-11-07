@@ -20,16 +20,16 @@ const note = piano => characters => (
 
 const view = piano => characters => () => (
   xs
-    .combine(characters.DOM$, piano.DOM$)
+    .combine(characters.DOM, piano.DOM)
     .map(children => div('.rythmbox', children))
 )
 
 export default (sources) => {
-  const piano = Piano({ DOM$: sources.DOM$, props$: xs.of({ notes: NOTES }) })
-  const characters = Characters({ DOM$: sources.DOM$, props$: xs.of({ characters: CHARACTERS }) })
+  const piano = Piano({ DOM: sources.DOM, props$: xs.of({ notes: NOTES }) })
+  const characters = Characters({ DOM: sources.DOM, props$: xs.of({ characters: CHARACTERS }) })
 
   return {
-    DOM$: view(piano)(characters)(sources),
+    DOM: view(piano)(characters)(sources),
     NOTE$: note(piano)(characters),
   }
 }

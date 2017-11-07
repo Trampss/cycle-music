@@ -18,7 +18,7 @@ const model = instrument => ({ props$, NOTE$ }) => (
     .combine(
       props$,
       getNumber(NOTE$),
-      instrument.DOM$,
+      instrument.DOM,
     )
 )
 
@@ -41,7 +41,7 @@ export default (sources) => {
   const instrument = Instrument(filteredSources)
 
   return {
-    DOM$: view(model(instrument)(filteredSources)), // combine all flow of dom
+    DOM: view(model(instrument)(filteredSources)), // combine all flow of dom
     MUSIC$: instrument.MUSIC$, // return flow of Music Wire
   }
 }

@@ -15,23 +15,23 @@ const view = world => cyclejs => (drivers) => {
 
   return xs
     .combine(
-      world.DOM$,
-      cyclejs.DOM$.map(children => div('.libraries', children)),
-      drivers.DOM$,
-      logo.DOM$,
-      title.DOM$,
-      creators.DOM$,
+      world.DOM,
+      cyclejs.DOM.map(children => div('.libraries', children)),
+      drivers.DOM,
+      logo.DOM,
+      title.DOM,
+      creators.DOM,
     )
     .map(children => div('.app', children))
 }
 
-export default ({ DOM$ }) => {
-  const world = World({ DOM$ })
+export default ({ DOM }) => {
+  const world = World({ DOM })
   const cyclejs = Cyclejs({ MUSIC$: world.MUSIC$ })
   const drivers = Drivers({ MUSIC$: cyclejs.MUSIC$ })
 
   return {
-    DOM$: view(world)(cyclejs)(drivers),
+    DOM: view(world)(cyclejs)(drivers),
     MUSIC$: drivers.MUSIC$,
   }
 }

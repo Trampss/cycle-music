@@ -18,7 +18,7 @@ export default (MUSICS) => {
   const MUSIC$ = xs.merge(...MUSICS)
 
   return {
-    DOM$: view(model({ MUSIC$ })),
+    DOM: view(model({ MUSIC$ })),
     MUSIC$: addDelay(MUSIC$),
   }
 }

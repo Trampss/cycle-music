@@ -51,7 +51,7 @@ const mergeStream = ({ NOTE$, MUSIC$, MUSICS$ }) =>
 
 export default (sources) => {
   return {
-    DOM$: view(model(mergeStream(sources))),
+    DOM: view(model(mergeStream(sources))),
     MUSIC$: addDelay(sources.MUSIC$),
     MUSICS$: addDelay(sources.MUSICS$),
     NOTE$: addDelay(sources.NOTE$),

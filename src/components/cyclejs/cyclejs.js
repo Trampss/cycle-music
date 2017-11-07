@@ -22,7 +22,7 @@ const view = state$ => (
 
 export default (sources) => {
   return {
-    DOM$: view(model(sources)),
+    DOM: view(model(sources)),
     MUSIC$: addDelay(sources.MUSIC$),
     NOTE$: addDelay(sources.NOTE$),
     HTTP$: addDelay(sources.HTTP$),

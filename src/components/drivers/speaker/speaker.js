@@ -15,7 +15,7 @@ const view = state$ => (
 
 export default (sources) => {
   return {
-    DOM$: view(model(sources)),
+    DOM: view(model(sources)),
     MUSIC$: sources.MUSIC$, // Speaker doesn't transform the music, it just 'prints' it
   }
 }
