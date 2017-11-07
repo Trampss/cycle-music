@@ -1,5 +1,5 @@
 # Cycle Music
-![Screencapture](http://zupimages.net/up/17/44/9j06.png)
+![Screencapture](http://zupimages.net/up/17/45/x655.png)
 
 ## Sources
  - [reactive programming -medium- @tkssharma](https://medium.com/@tkssharma/reactive-programming-rx-js-introduction-32bf963eee1b)
@@ -11,9 +11,9 @@
  - [BDX.io 2017](https://docs.google.com/presentation/d/1QipKxyUIcntcfenZPb6IzpMv11nKSCUyfVfB5VIgaWI/edit?usp=sharing)
 
 ## Live codings
- - [LC1 - First component](https://github.com/Trampss/cycle-music/pull/45)
- - [LC2 - Isolate components](https://github.com/Trampss/cycle-music/pull/42)
- - [LC3 - Map -xstream-](https://github.com/Trampss/cycle-music/pull/46)
- - [LC3bis - Filter -xstream-](https://github.com/Trampss/cycle-music/pull/47)
- - [LC4 - Merge -xstream-](https://github.com/Trampss/cycle-music/pull/43)
- - [LC5 - Driver](https://github.com/Trampss/cycle-music/pull/44)
+ - [LC1 - First component](https://github.com//cycle-music/pull/45)
+ - [LC2 - Isolate components](https://github.com/alakarteio/cycle-music/pull/42)
+ - [LC3 - Map -xstream-](https://github.com/alakarteio/cycle-music/pull/46)
+ - [LC3bis - Filter -xstream-](https://github.com/alakarteio/cycle-music/pull/47)
+ - [LC4 - Merge -xstream-](https://github.com/alakarteio/cycle-music/pull/43)
+ - [LC5 - Driver](https://github.com/alakarteio/cycle-music/pull/44)

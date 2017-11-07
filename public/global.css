@@ -5,19 +5,36 @@ body {
 }
 
 .logo {
+    cursor: pointer;
     position: absolute;
-    top: 1em;
-    right: 1em;
+    transform: rotateZ(180deg) translateY(3em);
+    transition: transform .5s ease-in-out;
+    right: 2em;
+}
+
+.logo img {
     width: 6vw;
 }
 
+.logo:hover {
+    transform: rotateZ(180deg);
+}
+
 .title {
+    align-items: center;
+    text-decoration: none;
     position: absolute;
     right: 1em;
     bottom: 1em;
     color: white;
-    font-size: 5em;
+    font-size: 4em;
     font-weight: bold;
+}
+
+.github {
+    width: 1em;
+    height: 1em;
+    margin-right: .3em;
 }
 
 .creator {
@@ -35,7 +52,7 @@ body {
 .creators {
     position: absolute;
     right: 2em;
-    top: 3em;
+    top: 5em;
 }
 
 .avatar {
