@@ -5,19 +5,9 @@ body {
 }
 
 .logo {
-    cursor: pointer;
     position: absolute;
-    transform: rotateZ(180deg) translateY(3em);
-    transition: transform .5s ease-in-out;
     right: 2em;
-}
-
-.logo img {
-    width: 6vw;
-}
-
-.logo:hover {
-    transform: rotateZ(180deg);
+    width: 5em;
 }
 
 .title {
