@@ -1,8 +1,11 @@
 import xs from 'xstream'
-import { img } from '@cycle/dom'
+import { a, img } from '@cycle/dom'
 
 const view = () => xs.of(
-  img('.logo', { props: { src: '/logo.png' } }),
+  a('.logo',
+    { props: { href: 'https://github.com/alakarteio' } },
+    img({ props: { src: '/logo.svg' } }),
+),
 )
 
 export default () => {
