@@ -1,5 +1,5 @@
 import xs from 'xstream'
-import { a, img } from '@cycle/dom'
+import { img } from '@cycle/dom'
 
 const view = () => xs.of(
   img('.logo', { props: { src: '/logo-bdxio.png' } }),
