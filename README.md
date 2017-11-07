@@ -8,7 +8,6 @@
 
 ## Slides
  - [Web2day 2017](https://docs.google.com/presentation/d/1ffUXgs4dimSTOKi3RtfW_6FYeabH9mQs19S1Om2-73k/edit?usp=sharing)
- - [BDX.io 2017](https://docs.google.com/presentation/d/1QipKxyUIcntcfenZPb6IzpMv11nKSCUyfVfB5VIgaWI/edit?usp=sharing)
 
 ## Live codings
  - [LC1 - First component](https://github.com/alakarteio/cycle-music/pull/45)
