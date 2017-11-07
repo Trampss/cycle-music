@@ -1,9 +1,14 @@
 import xs from 'xstream'
-import { div } from '@cycle/dom'
+import { a, div, img } from '@cycle/dom'
 
 const view = () => xs.of(
-  div('.title', 'God bless CycleJS!'),
-)
+  a('.title',
+    { props: { href: 'https://github.com/alakarteio/cycle-music' } },
+    [
+      img('.github', { props: { src: '/github.png' } }),
+      div('.text', 'cycle-music'),
+    ],
+))
 
 export default () => {
   return {
