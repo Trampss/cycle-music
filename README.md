@@ -1,13 +1,16 @@
 # Cycle Music
-![Screencapture](http://zupimages.net/up/17/45/x655.png)
+![Screencapture](https://i.goopics.net/01nxw.png)
 
 ## Sources
  - [reactive programming -medium- @tkssharma](https://medium.com/@tkssharma/reactive-programming-rx-js-introduction-32bf963eee1b)
  - [xstream README.md](https://github.com/staltz/xstream)
  - [cycle.js.org documentation](https://cycle.js.org/getting-started.html)
 
+## Talk
+ - [BDX.io 2017](https://www.youtube.com/watch?v=-tYCelZCKbU&index=20&list=PLUJzERpatfsW5PbUcMAIOIqfCoqS7K1F1)
+
 ## Slides
- - [Web2day 2017](https://docs.google.com/presentation/d/1ffUXgs4dimSTOKi3RtfW_6FYeabH9mQs19S1Om2-73k/edit?usp=sharing)
+ - [BDX.io 2017](https://docs.google.com/presentation/d/1QipKxyUIcntcfenZPb6IzpMv11nKSCUyfVfB5VIgaWI/edit?usp=sharing)
 
 ## Live codings
  - [LC1 - First component](https://github.com/alakarteio/cycle-music/pull/45)
