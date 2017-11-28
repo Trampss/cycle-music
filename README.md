@@ -6,6 +6,9 @@
  - [xstream README.md](https://github.com/staltz/xstream)
  - [cycle.js.org documentation](https://cycle.js.org/getting-started.html)
 
+## Talk
+- [Web2day 2017](https://www.youtube.com/watch?v=7NzPu-wQrNo)
+
 ## Slides
  - [Web2day 2017](https://docs.google.com/presentation/d/1ffUXgs4dimSTOKi3RtfW_6FYeabH9mQs19S1Om2-73k/edit?usp=sharing)
 
