@@ -6,6 +6,9 @@
  - [xstream README.md](https://github.com/staltz/xstream)
  - [cycle.js.org documentation](https://cycle.js.org/getting-started.html)
 
+## Talk
+ - [BDX.io 2017](https://www.youtube.com/watch?v=-tYCelZCKbU&index=20&list=PLUJzERpatfsW5PbUcMAIOIqfCoqS7K1F1)
+
 ## Slides
  - [BDX.io 2017](https://docs.google.com/presentation/d/1QipKxyUIcntcfenZPb6IzpMv11nKSCUyfVfB5VIgaWI/edit?usp=sharing)
 
