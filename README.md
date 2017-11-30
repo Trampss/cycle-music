@@ -7,7 +7,6 @@
 
 # Talks
 ## Who
- - alakarte [[Twitter](https://twitter.com/alakarteio) | [Github](https://github.com/alakarteio)]
  - Fabien JUIF [[Twitter](https://twitter.com/fabienjuif) | [Github](https://github.com/fabienjuif)]
  - Guillaume CRESPEL [[Twitter](https://twitter.com/guillaumcrespel) | [Github](https://github.com/guillaumecrespel)]
 
