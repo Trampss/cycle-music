@@ -23,22 +23,22 @@
  - [Web2Day Nantes, France - 2017](https://web2day.co/)
 
 ## Live codings
- - [LC1 - First component](https://github.com/alakarteio/cycle-music/pull/45)
- - [LC2 - Isolate components](https://github.com/alakarteio/cycle-music/pull/42)
- - [LC3 - Map -xstream-](https://github.com/alakarteio/cycle-music/pull/46)
- - [LC3bis - Filter -xstream-](https://github.com/alakarteio/cycle-music/pull/47)
- - [LC4 - Merge -xstream-](https://github.com/alakarteio/cycle-music/pull/43)
- - [LC5 - Driver](https://github.com/alakarteio/cycle-music/pull/44)
+ - [LC1 - First component](https://github.com/unirakun/cycle-music/pull/45)
+ - [LC2 - Isolate components](https://github.com/unirakun/cycle-music/pull/42)
+ - [LC3 - Map -xstream-](https://github.com/unirakun/cycle-music/pull/46)
+ - [LC3bis - Filter -xstream-](https://github.com/unirakun/cycle-music/pull/47)
+ - [LC4 - Merge -xstream-](https://github.com/unirakun/cycle-music/pull/43)
+ - [LC5 - Driver](https://github.com/unirakun/cycle-music/pull/44)
 
 # Sources
  - [reactive programming -medium- @tkssharma](https://medium.com/@tkssharma/reactive-programming-rx-js-introduction-32bf963eee1b)
  - [xstream README.md](https://github.com/staltz/xstream)
  - [cycle.js.org documentation](https://cycle.js.org/getting-started.html)
 
-# About ![alakarteio](http://alakarte.io/assets/img/logo.markdown.png)
-**alakarteio** is created by two passionate french developers.
+# About uni rakun ![unirakun](https://avatars3.githubusercontent.com/u/26111459?s=50&v=4)
+**uni rakun** is created by two passionate french developers.
 
-Do you want to contact them ? Go to their [website](http://alakarte.io)
+Do you want to contact them ? Go to their [website](https://unirakun.fr)
 
 <table border="0">
  <tr>
